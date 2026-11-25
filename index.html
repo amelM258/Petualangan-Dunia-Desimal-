@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;800&display=swap" rel="stylesheet">
+<title>Petualangan Dunia Desimal</title>
+<style>
+:root{--ink:#1f2a55;--muted:#4d5a85;--hd:#4337b8;--hot:#d9480f;--card:#fff;--soft:#eef2ff;--line:#d3daf5;--bg1:#e4efff;--bg2:#fff0f6;--sh:rgba(31,42,85,.15);--gb:#dcf7ec;--gf:#0b5e43;--tb:#fff0d6;--tf:#7a4a00;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#f1f4ff;--muted:#b8c2ec;--hd:#bdb6ff;--hot:#ff9a6b;--card:#222b57;--soft:#2c3669;--line:#414d86;--bg1:#111633;--bg2:#1d1941;--sh:rgba(0,0,0,.35);--gb:#14473a;--gf:#8ff0c8;--tb:#4d3a14;--tf:#ffd88a}}
+:root[data-theme="dark"]{--ink:#f1f4ff;--muted:#b8c2ec;--hd:#bdb6ff;--hot:#ff9a6b;--card:#222b57;--soft:#2c3669;--line:#414d86;--bg1:#111633;--bg2:#1d1941;--sh:rgba(0,0,0,.35);--gb:#14473a;--gf:#8ff0c8;--tb:#4d3a14;--tf:#ffd88a}
+:root[data-hc]{--ink:#000;--muted:#1a1a1a;--hd:#000;--hot:#a02800;--card:#fff;--soft:#fff;--line:#000;--bg1:#fff;--bg2:#fff;--gb:#c8f5e0;--gf:#00331f;--tb:#ffe9b8;--tf:#3a2000}
+:root[data-hc] :is(.card,.option,.btn,.tile,.tg,nav button,.gameboard,.mc .mk){border:.2rem solid #000}
+*{box-sizing:border-box}html{font-size:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;font:1.1rem/1.7 'Lexend','Trebuchet MS',Verdana,sans-serif;color:var(--ink);background:radial-gradient(circle at 12% 8%,rgba(255,200,61,.25),transparent 30%),radial-gradient(circle at 92% 28%,rgba(91,75,219,.16),transparent 35%),linear-gradient(160deg,var(--bg1),var(--bg2));background-attachment:fixed}
+button,input,select{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:transparent}:focus-visible{outline:.3rem solid #ffb020;outline-offset:.2rem}
+header{position:relative;overflow:hidden;text-align:center;color:#fff;padding:3rem 1.2rem 3.4rem;background:radial-gradient(circle at 80% 15%,#7f6bff,transparent 45%),linear-gradient(135deg,#2b2379,#2f6fe0);border-radius:0 0 2.6rem 2.6rem}
+header:before{content:"";position:absolute;inset:0;background-image:radial-gradient(#fff 1.5px,transparent 2px),radial-gradient(#ffe38a 1px,transparent 1.6px);background-size:90px 90px,57px 57px;background-position:0 0,23px 31px;opacity:.5;animation:twk 5s ease-in-out infinite alternate}
+@keyframes twk{to{opacity:.15}}
+.rocket{position:relative;display:inline-block;font-size:3.6rem;animation:fly 3.2s ease-in-out infinite}@keyframes fly{50%{transform:translate(.7rem,-.8rem) rotate(6deg)}}
+h1{position:relative;font-size:clamp(2rem,6vw,3.3rem);line-height:1.15;margin:.3rem 0 .5rem;font-weight:800}header p{position:relative;font-size:1.2rem;margin:0}
+.audio{width:min(68rem,calc(100% - 2rem));margin:1.3rem auto 0;background:var(--card);border-radius:1.8rem;padding:1.3rem 1.5rem;box-shadow:0 .4rem 0 var(--sh)}.audio .muted{font-size:.95rem}
+.audio-controls,.tools{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}.tools{margin-top:.9rem}.audio label{font-weight:600}
+select,input{padding:.7rem .9rem;border:.15rem solid var(--line);border-radius:1rem;background:var(--card);color:var(--ink);max-width:100%}
+input[type=range]{padding:0;accent-color:#5b4bdb;width:9rem;height:2rem}.status{font-weight:600;color:var(--hd);min-height:1.6em;margin-top:.5rem}
+.tg{border:.15rem solid var(--line);border-radius:2rem;padding:.6rem 1.1rem;min-height:3rem;background:var(--soft);color:var(--ink);font-weight:600;box-shadow:0 .2rem 0 var(--sh)}
+.tg[aria-pressed=true]{background:#0f8f66;color:#fff;border-color:#0f8f66}.tg[aria-pressed=true]:after{content:" ✔"}
+nav{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;padding:.8rem;position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--card) 85%,transparent);backdrop-filter:blur(14px);box-shadow:0 .4rem 1.2rem var(--sh);margin-top:1rem}
+main{max-width:70rem;margin:auto;padding:1.5rem 1rem}.page{display:none}.page.active{display:block;animation:rise .45s cubic-bezier(.2,.8,.2,1)}@keyframes rise{from{opacity:0;transform:translateY(1rem)}}
+.card,.hero{background:var(--card);border-radius:1.8rem;padding:1.6rem;margin:0 0 1.4rem;box-shadow:0 .4rem 0 var(--sh),0 1.2rem 2rem -1rem var(--sh)}
+.hero{text-align:center;padding:2.6rem 1.3rem;background:linear-gradient(135deg,#ffe9a6,#ffd3e4);color:#1f2a55}.hero h2{color:#3f31ab;font-size:clamp(1.8rem,5vw,2.4rem)}
+.hero .big{font-size:clamp(3rem,10vw,5rem);line-height:1.2;animation:bob 3s ease-in-out infinite}@keyframes bob{50%{transform:translateY(-.6rem)}}
+h2{font-size:clamp(1.5rem,4vw,1.9rem);color:var(--hd);margin:0 0 .7rem;line-height:1.3}h3{font-size:1.3rem;margin:0 0 .4rem}.lead{font-size:1.25rem}.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));gap:1rem}.tile{background:var(--soft);padding:1.3rem;border-radius:1.4rem;transition:transform .25s}.tile:hover{transform:translateY(-.25rem)}.tile .symbol{font-size:2.8rem}
+.callout{background:var(--soft);border-left:.5rem solid #5b4bdb;padding:1rem 1.2rem;border-radius:1rem;margin:1rem 0}.example{font-size:clamp(2rem,6vw,2.8rem);font-weight:800;text-align:center;color:var(--hot);margin:.8rem}
+table{border-collapse:separate;border-spacing:0;width:100%;margin:1rem 0;text-align:center;overflow:hidden;border-radius:1rem;border:.15rem solid var(--line)}th,td{padding:.8rem .4rem;border-bottom:.1rem solid var(--line)}th{background:#5b4bdb;color:#fff}td{background:var(--card)}
+.btn,nav button{border:.15rem solid transparent;border-radius:1.2rem;padding:.8rem 1.3rem;min-height:3.2rem;background:var(--soft);color:var(--hd);font-weight:800;box-shadow:0 .28rem 0 var(--sh);transition:transform .15s,box-shadow .15s}.btn{margin:.3rem}
+.btn.primary,nav button.active{background:#5b4bdb;color:#fff}nav button.active{box-shadow:0 .28rem 0 #3f31ab}.btn.green{background:#0f8f66;color:#fff}.btn.orange{background:#c2410c;color:#fff}.btn.pink{background:#c0306a;color:#fff}
+:is(.btn,nav button,.option,.tg):hover{transform:translateY(-.15rem)}:is(.btn,nav button,.option,.tg):active{transform:translateY(.2rem);box-shadow:none}
+.question{background:var(--soft);padding:1.3rem;border-radius:1.4rem;margin:1rem 0}.options{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:.8rem}
+.option{padding:1rem;min-height:4rem;border:.18rem solid var(--line);border-radius:1.2rem;background:var(--card);color:var(--ink);font-size:1.15rem;font-weight:600;text-align:left;box-shadow:0 .28rem 0 var(--sh);transition:transform .15s,box-shadow .15s}
+.option.selected{border-color:#5b4bdb;background:var(--soft);box-shadow:0 0 0 .25rem rgba(91,75,219,.4)}.gameboard .option{text-align:center;font-size:1.3rem;font-weight:800}
+.answer{width:12rem;text-align:center;font-size:1.3rem}
+.feedback{padding:1rem 1.2rem;border-radius:1.2rem;margin-top:.9rem;font-weight:600;animation:rise .35s}.feedback.good{background:var(--gb);color:var(--gf)}.feedback.try{background:var(--tb);color:var(--tf)}.feedback.good:before{content:"🎉 "}.feedback.try:before{content:"💡 "}
+.progress{height:1.1rem;background:var(--soft);border-radius:2rem;overflow:hidden;margin:1rem 0}.progress div{height:100%;width:0;background:linear-gradient(90deg,#17b383,#ffc83d);border-radius:2rem;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.scoreline{display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center}.scorebox{display:inline-block;background:var(--card);padding:.6rem 1.2rem;border-radius:1.2rem;font-weight:800;box-shadow:0 .25rem 0 var(--sh)}
+.gameboard{background:var(--soft);border:.15rem dashed var(--line);border-radius:1.6rem;padding:1.5rem 1rem;text-align:center;margin:1rem 0}.bigproblem{font-size:clamp(1.8rem,6vw,3rem);font-weight:800;color:var(--hd);margin:.8rem;line-height:1.25}
+.floaters{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:-1}.floaters span{position:absolute;color:#5b4bdb;opacity:.15;font-size:2.4rem;font-weight:800;animation:drift 13s ease-in-out infinite}.floaters span:nth-child(1){left:8%;top:25%}.floaters span:nth-child(2){left:80%;top:50%;animation-delay:-4s}.floaters span:nth-child(3){left:45%;top:80%;animation-delay:-8s}@keyframes drift{50%{transform:translateY(-2.2rem) rotate(14deg)}}
+footer{text-align:center;padding:2rem 1rem;margin-top:2rem;background:linear-gradient(135deg,#2b2379,#2f6fe0);color:#fff;border-radius:2.5rem 2.5rem 0 0}
+.nline{position:relative;max-width:40rem;margin:1rem auto 0;padding-top:3.2rem}.frog{position:absolute;top:0;left:4.545%;transform:translateX(-50%);font-size:2.8rem;line-height:1;transition:left .6s cubic-bezier(.3,1.5,.5,1)}
+.ticks{display:flex;position:relative}.ticks:before{content:"";position:absolute;left:4.5%;right:4.5%;top:.55rem;height:.45rem;border-radius:1rem;background:var(--ink)}
+.tick{flex:1;min-width:0;background:none;border:0;padding:0 0 .3rem;min-height:5rem;color:var(--ink);border-radius:.8rem}.tick i{display:block;width:.35rem;height:1.5rem;margin:0 auto;background:var(--ink);border-radius:1rem;position:relative}.tick b{display:block;font-size:.95rem}.tick:hover{background:rgba(91,75,219,.18)}
+.kgrid{display:grid;grid-template-columns:repeat(10,1fr);gap:.22rem;max-width:22rem;margin:1rem auto;padding:.5rem;border:.2rem solid var(--ink);border-radius:1rem;background:var(--card)}
+.kc{aspect-ratio:1;border:0;border-radius:.3rem;background:var(--soft);padding:0;transition:background .2s,transform .2s}.kc.on{background:#5b4bdb;transform:scale(.88)}
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;max-width:36rem;margin:1rem auto}.mc{aspect-ratio:1/1.1;background:none;border:0;padding:0;perspective:50rem}
+.mi{position:relative;display:block;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s}.mc.up .mi{transform:rotateY(180deg)}
+.mb,.mk{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border-radius:1rem;backface-visibility:hidden;font-weight:800;font-size:clamp(1.1rem,4vw,1.7rem)}
+.mb{background:linear-gradient(135deg,#5b4bdb,#2f80ed);color:#fff;font-size:2rem;box-shadow:0 .25rem 0 var(--sh)}.mk{background:var(--card);color:var(--ink);border:.2rem solid #5b4bdb;transform:rotateY(180deg)}.mc.ok .mk{background:var(--gb);color:var(--gf);border-color:#0f8f66}
+.hl{background:#ffc83d;color:#1f2a55;border-radius:.5rem;padding:0 .3rem}
+#cv{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50}
+@media(max-width:600px){body{font-size:1.02rem}th,td{font-size:.85rem}.card{padding:1.2rem}}
+:root[data-calm] *,:root[data-calm] *:before{animation:none!important;transition:none!important}@media (prefers-reduced-motion:reduce){*,*:before{animation:none!important;transition:none!important}}
+
+/* ===== REVISI STRUKTUR HALAMAN ===== */
+.stage{display:none}.stage.active{display:block;animation:rise .45s cubic-bezier(.2,.8,.2,1)}
+#opening.active{display:flex}
+#opening{min-height:100vh;min-height:100dvh;align-items:center;justify-content:center;padding:1.5rem 1rem;position:relative;overflow:hidden;background:radial-gradient(circle at 15% 12%,rgba(255,200,61,.35),transparent 28%),radial-gradient(circle at 88% 20%,#7f6bff,transparent 40%),radial-gradient(circle at 50% 105%,rgba(255,111,145,.4),transparent 45%),linear-gradient(160deg,#2b2379,#2f6fe0)}
+#opening:before{content:"";position:absolute;inset:0;background-image:radial-gradient(#fff 1.5px,transparent 2px),radial-gradient(#ffe38a 1px,transparent 1.6px);background-size:90px 90px,57px 57px;background-position:0 0,23px 31px;opacity:.45;animation:twk 5s ease-in-out infinite alternate}
+.op-deco span{position:absolute;font-size:2.6rem;font-weight:800;color:#fff;opacity:.4;animation:drift 9s ease-in-out infinite}.op-deco span:nth-child(2n){animation-delay:-3s}.op-deco span:nth-child(3n){animation-delay:-6s}
+.op-card{position:relative;z-index:1;width:min(40rem,100%);background:var(--card);border-radius:2.2rem;padding:2rem 1.6rem 2.2rem;text-align:center;box-shadow:0 .5rem 0 rgba(0,0,0,.2),0 2rem 3rem -1rem rgba(0,0,0,.45)}
+.op-card .rocket{font-size:4.2rem}.op-card h1{color:var(--hd);margin:.2rem 0 .6rem}.op-card h2{color:var(--hot)}.op-card p{margin:.6rem 0}
+.cta{font-size:1.3rem;min-height:4rem;padding:1rem 2rem;margin-top:1rem}
+.wrap{max-width:70rem;margin:auto;padding:1.5rem 1rem}
+.featnav{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center;margin:0 0 1.4rem}.featnav .btn{flex:1 1 11rem;font-size:1.15rem;margin:0}
+.topbar{position:sticky;top:0;z-index:5;padding:.5rem .6rem .6rem;background:color-mix(in srgb,var(--card) 88%,transparent);backdrop-filter:blur(14px);box-shadow:0 .4rem 1.2rem var(--sh)}
+.topbar nav{position:static;margin:0;padding:0;background:none;backdrop-filter:none;box-shadow:none}
+.minibar{display:flex;gap:.5rem;justify-content:center;margin-bottom:.5rem}
+.minibar .btn{margin:0;min-height:2.4rem;padding:.3rem .9rem;font-size:.9rem;border-radius:1rem;box-shadow:0 .15rem 0 var(--sh)}
+:root[data-hc] .topbar{border-bottom:.2rem solid #000}
+@media(max-width:600px){.topbar nav{gap:.4rem}.topbar nav button{padding:.5rem .7rem;min-height:2.8rem;font-size:.95rem}.minibar .btn{font-size:.85rem;padding:.3rem .7rem}.op-card{padding:1.6rem 1.2rem 1.8rem}}
+</style>
+</head>
+<body>
+<div class="floaters" aria-hidden="true"><span>0,5</span><span>1,25</span><span>3,75</span></div>
+<div id="opening" class="stage active">
+<div class="op-deco" aria-hidden="true"><span style="left:7%;top:10%">🪐</span><span style="left:84%;top:8%">⭐</span><span style="left:9%;top:76%">0,5</span><span style="left:80%;top:72%">1,25</span><span style="left:46%;top:4%">☄️</span><span style="left:88%;top:44%">3,75</span></div>
+<div class="op-card"><span class="rocket" aria-hidden="true">🚀</span><h1>Petualangan Dunia Desimal</h1><h2>Halo, Penjelajah Cilik!</h2><p class="lead">Selamat datang di dunia penuh angka dan tantangan seru!</p><p>Di sini, kamu akan mengenal bilangan desimal melalui materi yang menyenangkan, contoh soal, permainan interaktif, dan kuis yang menantang.</p><p>Siapkan semangatmu, kumpulkan bintang, dan buktikan bahwa belajar matematika bisa menjadi petualangan yang menyenangkan!</p><button class="btn primary cta" onclick="showStage('intro')">MULAI PETUALANGAN 🚀</button></div>
+</div>
+<div id="intro" class="stage">
+<header><span class="rocket" aria-hidden="true">🚀</span><h1>Petualangan Dunia Desimal</h1><p>Jelajahi angka, pecahkan tantangan, dan kumpulkan bintang!</p></header>
+<section class="audio">
+<h2>🔊 Teman Baca</h2><p class="muted">Pilih suara yang tersedia di perangkat. Jika perangkat menyediakan suara Makassar atau suara anak, pilihan tersebut akan muncul di daftar. Ketersediaannya bergantung pada sistem operasi dan browser.</p>
+<div class="audio-controls"><label for="voice">Pilihan suara:</label><select id="voice"><option value="">Suara Indonesia otomatis</option></select><label for="rate">Kecepatan:</label><input id="rate" type="range" min=".75" max="1.15" step=".05" value=".9"><button class="btn primary" onclick="speakCurrent()">🔊 Bacakan bagian ini</button><button class="btn orange" onclick="stopSpeech()">■ Berhenti</button></div><div id="audioStatus" class="status" aria-live="polite">Suara siap digunakan.</div><div class="tools" role="group" aria-label="Pengaturan tampilan dan bunyi"><button class="tg" data-k="big" aria-pressed="false">🔠 Huruf besar</button><button class="tg" data-k="hc" aria-pressed="false">🌗 Kontras tinggi</button><button class="tg" data-k="calm" aria-pressed="false">🕊️ Mode tenang</button><button class="tg" data-k="read" aria-pressed="false">🗣️ Baca jawaban otomatis</button><button class="tg" data-k="snd" aria-pressed="true">🔔 Bunyi efek</button></div>
+</section>
+<div class="wrap">
+<div class="featnav" role="group" aria-label="Navigasi fitur media"><button class="btn primary" onclick="showPage('learn')">📚 Materi</button><button class="btn primary" onclick="showPage('practice')">💡 Contoh Soal</button><button class="btn primary" onclick="showPage('games')">🎮 Games</button><button class="btn primary" onclick="showPage('quiz')">🏆 Kuis</button></div>
+<div class="card"><h2>🎯 Tujuan petualangan</h2><ul><li>Memahami arti bilangan desimal dan hubungannya dengan pecahan.</li><li>Mengenali nilai tempat sampai perseribuan.</li><li>Membaca, menulis, membandingkan, dan mengurutkan desimal.</li><li>Melakukan penjumlahan dan pengurangan desimal.</li><li>Menggunakan desimal untuk menyelesaikan masalah sehari-hari.</li></ul></div>
+<div class="grid"><div class="tile"><div class="symbol">📖</div><h3>Belajar bertahap</h3><p>Materi inti kelas 4 disertai pengayaan kelas 5–6.</p></div><div class="tile"><div class="symbol">🎮</div><h3>Tujuh misi</h3><p>Bandingkan, soal cerita, melompat di garis bilangan, mewarnai, dan mencocokkan kartu.</p></div><div class="tile"><div class="symbol">🏅</div><h3>Kumpulkan skor</h3><p>Dapatkan poin dari jawaban benar dan tantangan.</p></div></div>
+
+<div class="hero" style="margin-top:1.4rem"><div class="big" aria-hidden="true">🌟</div><h2>Siap Memulai Petualangan?</h2><p class="lead">Semua sudah siap! Sekarang waktunya menjelajahi dunia desimal, memahami materi, menyelesaikan tantangan, dan mengumpulkan bintang.</p><button class="btn primary cta" onclick="showPage('learn')">SIAP MEMULAI PETUALANGAN 🚀</button></div>
+</div>
+</div>
+<div id="app" class="stage">
+<div class="topbar"><div class="minibar"><button class="btn primary" onclick="speakCurrent()">🔊 Bacakan Bagian Ini</button><button class="btn orange" onclick="stopSpeech()">■ Berhenti</button></div>
+<nav>
+<button class="active" data-page="learn" onclick="showPage('learn',this)">📚 Materi</button>
+<button data-page="practice" onclick="showPage('practice',this)">💡 Contoh Soal</button>
+<button data-page="games" onclick="showPage('games',this)">🎮 Games</button>
+<button data-page="quiz" onclick="showPage('quiz',this)">🏆 Kuis</button>
+</nav></div>
+<main>
+
+
+<section id="learn" class="page active">
+<div class="card"><h2>1. Apa Itu Bilangan Desimal?</h2><p>Bayangkan kamu punya 2 batang cokelat utuh dan setengah batang cokelat lagi. Bagaimana cara menulisnya dengan angka? Nah, di sinilah kita memakai bilangan desimal!</p><ul><li>Bilangan desimal adalah bilangan yang memakai tanda koma (,) untuk memisahkan bagian yang utuh (di sebelah kiri koma) dan bagian yang tidak utuh atau potongan (di sebelah kanan koma).</li><li>Contoh: 2,5 artinya 2 utuh dan 5 bagian kecil (setengah).</li></ul><div class="example">2,5</div></div>
+<div class="card"><h2>2. Cara Membaca Bilangan Desimal</h2><p>Aturan mainnya gampang: angka di belakang koma dibaca satu per satu, jangan dibaca puluhan atau ratusan!</p><div class="grid"><div class="tile"><h3>0,4</h3><p>dibaca “nol koma empat”</p></div><div class="tile"><h3>1,62</h3><p>dibaca “satu koma enam dua” ❌ bukan satu koma enam puluh dua</p></div><div class="tile"><h3>5,09</h3><p>dibaca “lima koma nol sembilan”</p></div></div></div>
+<div class="card"><h2>3. Melihat Desimal Lewat Kotak</h2><h3>🍫 Papan cokelat isi 100 kotak</h3><ul><li>Kalau kamu makan 1 kotak kecil, itu namanya 0,01 (1 dari 100 kotak).</li><li>Kalau kamu makan 1 baris penuh (10 kotak), itu namanya 0,10 atau 0,1.</li></ul><h3>📏 Penggaris (0 sampai 1)</h3><p>Jarak dari angka 0 ke 1 dibagi menjadi 10 langkah kecil. Setiap 1 kali katak melompat, nilainya bertambah 0,1.</p><div class="example">0,1 → 0,2 → 0,3 → … → 1</div></div>
+<div class="card"><h2>4. Desimal dan Persen (%) itu Saudara Kembar!</h2><p>Kalau ada 2 angka di belakang koma, angka itu bisa langsung diubah jadi persen (%) dengan membuang koma dan nol di depannya.</p><table><tr><th>Desimal</th><th>Persen</th></tr><tr><td>0,25</td><td>25%</td></tr><tr><td>0,50 (atau 0,5)</td><td>50% (artinya setengah)</td></tr><tr><td>0,08</td><td>8%</td></tr></table></div>
+<div class="card"><h2>5. Desimal di Sekitar Kita</h2><p>Kamu pasti sering melihat desimal dalam kehidupan sehari-hari:</p><div class="grid"><div class="tile"><div class="symbol">⚖️</div><h3>Timbangan Buah</h3><p>Berat mangga 1,5 kg (1 kg lebih setengah kg).</p></div><div class="tile"><div class="symbol">📏</div><h3>Penggaris / Pita</h3><p>Panjang pita 2,5 meter (2 meter lebih setengah meter).</p></div><div class="tile"><div class="symbol">🥛</div><h3>Botol Minum</h3><p>Isi botol 0,75 liter (hampir 1 liter penuh).</p></div></div></div>
+<div class="card"><h2>6. Nilai Tempat Bilangan Desimal</h2><p>Setiap angka memiliki nilai berbeda sesuai posisinya terhadap tanda koma. Perhatikan tabel nilai tempat untuk bilangan 12,345 berikut:</p><table><tr><th>Puluhan</th><th>Satuan</th><th>,</th><th>Persepuluhan</th><th>Perseratusan</th><th>Perseribuan</th></tr><tr><td>1</td><td>2</td><td>,</td><td>3</td><td>4</td><td>5</td></tr><tr><td>Nilainya 10</td><td>Nilainya 2</td><td>Pemisah</td><td>3/10 (0,3)</td><td>4/100 (0,04)</td><td>5/1.000 (0,005)</td></tr></table><div class="callout"><b>Ingat:</b> Makin ke kanan dari tanda koma, nilai angkanya makin kecil!</div></div>
+<div class="card"><h2>7. Trik Membandingkan Mana yang Lebih Besar</h2><p>Terkadang anak-anak tertipu mengira 0,65 lebih besar dari 0,7 karena 65 lebih besar dari 7. Padahal salah! Agar tidak tertipu, kita boleh menyamakan jumlah angka di belakang koma dengan menambahkan angka 0 di paling belakang.</p><div class="callout"><b>Kenapa boleh ditambah 0 di paling belakang?</b><br>Ingat kembali papan cokelat 100 kotak! Mewarnai 7 baris (0,7 atau 7/10) luasnya sama persis dengan mewarnai 70 kotak kecil (0,70 atau 70/100). Jadi, menambah 0 di paling belakang tidak mengubah nilainya (0,7 = 0,70).</div><div class="callout"><b>Hati-hati! Di mana 0 TIDAK BOLEH ditambahkan?</b><br>Jangan pernah menyelipkan angka 0 di tengah (tepat setelah koma)! 0,7 TIDAK SAMA dengan 0,07 (70 kotak jauh lebih banyak daripada 7 kotak).</div><h3>Contoh: mana lebih besar, 0,7 atau 0,65?</h3><ol><li>Tambahkan 0 di paling belakang pada 0,7 sehingga menjadi 0,70.</li><li>Sekarang bandingkan 70 kotak dengan 65 kotak. Jelas 70 lebih banyak!</li></ol><div class="example">0,7 &gt; 0,65</div></div>
+<div class="card"><h2>8. Membulatkan Desimal (Dekat ke Mana?)</h2><p>Membulatkan artinya mencari bilangan bulat terdekat. Lihat angka pertama di belakang koma:</p><div class="grid"><div class="tile"><div class="symbol">⬇️</div><h3>Angka kecil (0, 1, 2, 3, 4)</h3><p>Turun (hilangkan koma). Contoh: 4,3 lebih dekat ke 4.</p></div><div class="tile"><div class="symbol">⬆️</div><h3>Angka besar (5, 6, 7, 8, 9)</h3><p>Naik (+1). Contoh: 6,7 lebih dekat ke 7.</p></div></div></div>
+<div class="card"><h2>9. Trik Geser Koma (Kali dan Bagi 10 atau 100)</h2><p>Tidak perlu menghitung bersusun, cukup geser tanda komanya saja!</p><div class="callout"><b>Dikali 10 atau 100 → koma jalan ke KANAN</b> (angkanya jadi makin besar):<br>2,45 × 10 = <b>24,5</b> (geser 1 langkah)<br>2,45 × 100 = <b>245</b> (geser 2 langkah)</div><div class="callout"><b>Dibagi 10 atau 100 → koma jalan ke KIRI</b> (angkanya jadi makin kecil):<br>36,5 ÷ 10 = <b>3,65</b> (geser 1 langkah)</div></div>
+<div class="card"><h2>10. Mengubah Desimal ↔ Pecahan Biasa</h2><h3>Desimal ke pecahan: hitung ada berapa angka di belakang koma!</h3><ul><li>1 angka di belakang koma → per 10. Contoh: 0,6 = 6/10 = 3/5.</li><li>2 angka di belakang koma → per 100. Contoh: 0,25 = 25/100 = 1/4.</li></ul><h3>Pecahan ke desimal: ubah angka bawah (penyebut) menjadi 10 atau 100.</h3><div class="callout">Contoh: 3/4 = (3 × 25)/(4 × 25) = 75/100 = <b>0,75</b><br>Kalau tidak bisa jadi 10 atau 100, bagi angka atas dengan angka bawah seperti pembagian biasa: 1/8 = 1 ÷ 8 = 0,125.</div></div>
+<div class="card"><h2>11. Perkalian Desimal: “Simpan Koma, Hitung Biasa, Kembalikan Koma!”</h2><p>Jangan pusing melihat koma saat mengalikan. Ikuti 3 langkah ini:</p><ol><li>Sembunyikan dulu komanya, kalikan seperti biasa.</li><li>Hitung ada berapa angka di belakang koma pada soal.</li><li>Pasang kembali komanya dari belakang!</li></ol><div class="callout"><b>Contoh: 0,5 × 0,2 = …</b><br>Kalikan biasa: 5 × 2 = 10.<br>Ada 2 angka di belakang koma (angka 5 dan angka 2).<br>Hitung 2 langkah dari belakang pada angka 10 → <b>0,10 atau 0,1</b>.</div></div>
+<div class="card"><h2>12. Pembagian Desimal</h2><ul><li><b>Jika dibagi bilangan biasa:</b> bagi seperti biasa, saat melewati koma langsung tulis koma di hasilnya. Contoh: 4,8 ÷ 2 = <b>2,4</b>.</li><li><b>Jika sama-sama desimal:</b> hilangkan komanya dulu dengan cara menggeser koma ke kanan sama banyak pada kedua angka!</li></ul><div class="callout">Contoh: 2,4 ÷ 0,6 → sama-sama geser koma 1 langkah menjadi 24 ÷ 6 = <b>4</b>.</div></div>
+<div class="card"><h2>13. Jurus Jitu Mengerjakan Soal Cerita</h2><p>Kalau bertemu soal cerita, pakai jurus 3C:</p><ol><li><b>Cari angkanya:</b> tandai angka dan satuannya (misal: 1,25 kg jeruk dan 0,75 kg apel).</li><li><b>Cek kata kuncinya:</b></li></ol><table><tr><th>Kata kunci</th><th>Operasi</th></tr><tr><td>dibeli lagi, digabung, total seluruhnya</td><td>Tambah (+)</td></tr><tr><td>dimakan, dipakai, tumpah, sisa</td><td>Kurang (−)</td></tr><tr><td>setiap kantong berisi…, sebanyak 5 kali</td><td>Kali (×)</td></tr><tr><td>dibagikan sama rata, dipotong menjadi…</td><td>Bagi (÷)</td></tr></table><ol start="3"><li><b>Coret-coret dan tulis satuan:</b> hitung teliti, jangan lupa tulis satuannya di akhir (misal: 2 kg).</li></ol></div>
+<button class="btn green" onclick="showPage('practice')">Lanjut ke contoh dan latihan →</button>
+</section>
+
+<section id="practice" class="page">
+<div class="card"><h2>💡 Contoh bersama</h2><div class="question"><h3>Contoh 1 — Membaca dan Menulis Desimal</h3><p>Bagaimana penulisan angka yang benar untuk bacaan “empat koma nol enam”?</p><div class="callout"><b>Pembahasan:</b><br>Angka di depan koma adalah 4. Di belakang koma ada angka 0 dan 6. Jadi, penulisannya adalah <b>4,06</b>.</div></div><div class="question"><h3>Contoh 2 — Desimal dan Persen</h3><p>Di papan cokelat berisi 100 kotak, Rina memakan 35 kotak. Tuliskan bagian yang dimakan Rina dalam bentuk desimal dan persen!</p><div class="callout"><b>Pembahasan:</b><br>35 dari 100 kotak artinya 35/100.<br>Bentuk desimalnya: <b>0,35</b><br>Bentuk persennya: <b>35%</b></div></div><div class="question"><h3>Contoh 3 — Nilai Tempat</h3><p>Pada bilangan 15,482, angka 8 menempati nilai tempat apa dan berapa nilainya?</p><div class="callout"><b>Pembahasan:</b><br>Angka 8 berada di urutan kedua di sebelah kanan koma, sehingga menempati nilai tempat <b>perseratusan</b> dengan nilai <b>0,08</b> (atau 8/100).</div></div><div class="question"><h3>Contoh 4 — Membandingkan Desimal</h3><p>Mana yang lebih banyak: air sirup 0,6 liter atau 0,58 liter?</p><div class="callout"><b>Pembahasan:</b><br>Samakan jumlah angka di belakang koma dengan menambahkan angka 0 di paling belakang pada 0,6 sehingga menjadi 0,60 (nilainya tetap sama).<br>Sekarang bandingkan 0,60 dan 0,58. Karena 60 lebih besar dari 58, maka yang lebih banyak adalah <b>0,6 liter</b>.</div></div><div class="question"><h3>Contoh 5 — Pembulatan Desimal</h3><p>Berat seekor kucing peliharaan Dito adalah 3,64 kg. Berapa berat kucing tersebut jika dibulatkan ke satuan terdekat?</p><div class="callout"><b>Pembahasan:</b><br>Lihat angka pertama di belakang koma, yaitu angka 6. Karena 6 termasuk angka besar (5, 6, 7, 8, 9), maka dibulatkan naik (+1). Jadi, beratnya dibulatkan menjadi <b>4 kg</b>.</div></div><div class="question"><h3>Contoh 6 — Trik Geser Koma</h3><p>Setiap pagi, Rani membawa botol minum berisi 0,45 liter air. Berapa liter air yang diminum Rani selama 10 hari?</p><div class="callout"><b>Pembahasan:</b><br>Kalikan 0,45 × 10. Karena dikali 10, cukup geser tanda koma 1 langkah ke kanan → <b>4,5 liter</b>.</div></div><div class="question"><h3>Contoh 7 — Mengubah Pecahan ke Desimal</h3><p>Ubahlah pecahan 4/5 menjadi bilangan desimal!</p><div class="callout"><b>Pembahasan:</b><br>Ubah angka bawah (penyebut) menjadi 10 dengan cara mengalikan 2:<br>(4 × 2)/(5 × 2) = 8/10 = <b>0,8</b></div></div><div class="question"><h3>Contoh 8 — Perkalian Desimal</h3><p>Hitunglah hasil dari 1,5 × 0,4!</p><div class="callout"><b>Pembahasan:</b><br>1. Simpan dulu komanya, kalikan seperti biasa: 15 × 4 = 60.<br>2. Hitung ada berapa angka di belakang koma pada soal: ada 2 angka (angka 5 dan angka 4).<br>3. Pasang koma 2 langkah dari belakang pada angka 60 → <b>0,60 atau 0,6</b>.</div></div><div class="question"><h3>Contoh 9 — Pembagian Desimal — Soal Cerita</h3><p>Kakak mempunyai pita sepanjang 3,6 meter. Pita tersebut akan dipotong-potong menjadi beberapa bagian yang sama panjang, masing-masing 0,9 meter. Ada berapa potong pita yang dihasilkan kakak?</p><div class="callout"><b>Pembahasan:</b><br>Operasi hitungnya adalah 3,6 ÷ 0,9.<br>Sama-sama geser koma 1 langkah ke kanan agar komanya hilang: 36 ÷ 9 = <b>4 potong pita</b>.</div></div><div class="question"><h3>Contoh 10 — Soal Cerita 2 Langkah</h3><p>Ibu membeli 2,5 kg gula pasir di warung. Di rumah ternyata masih ada sisa gula sebanyak 0,75 kg. Jika 1,5 kg gula digunakan ibu untuk membuat kue, berapa kilogram sisa gula ibu sekarang?</p><div class="callout"><b>Pembahasan:</b><br>Langkah 1 (gabungkan gula): 2,50 + 0,75 = 3,25 kg.<br>Langkah 2 (kurangi yang dipakai): 3,25 − 1,50 = <b>1,75 kg</b>.</div></div></div>
+<div class="card"><h2>✏️ Coba jawab sendiri</h2><p>Soal selalu berganti. Isikan jawaban memakai tanda koma, lalu tekan Periksa.</p><div id="practiceQuestion" class="question"></div><input id="practiceAnswer" class="answer" placeholder="Jawabanmu"><button class="btn primary" onclick="checkPractice()">Periksa</button><button class="btn green" onclick="nextPractice()">Soal berikutnya</button><div id="practiceFeedback" aria-live="polite"></div></div>
+<button class="btn primary" onclick="showPage('games')">Masuk ke arena permainan 🎮</button>
+</section>
+
+<section id="games" class="page">
+<div class="card"><h2>🎮 Arena Permainan Desimal</h2><p>Pilih misi. Setiap jawaban benar menambah poin. Coba tantangan yang semakin menantang!</p><div class="scoreline"><div class="scorebox">⭐ Total poin: <span id="totalScore">0</span></div><div class="scorebox">🏅 Misi selesai: <span id="missions">0</span></div></div></div>
+<div class="card"><h2>🚀 Misi 1 — Duel Desimal</h2><p>Pilih bilangan yang lebih besar. Soal berubah setiap ronde.</p><div class="gameboard"><div id="compareProblem" class="bigproblem">0,7 atau 0,4?</div><button class="btn primary" id="leftBtn" onclick="answerCompare('left')">Angka kiri</button><button class="btn orange" id="rightBtn" onclick="answerCompare('right')">Angka kanan</button><div id="compareFeedback" aria-live="polite"></div><button class="btn green" onclick="newCompare()">Soal berikutnya ↻</button></div></div>
+<div class="card"><h2>🧩 Misi 2 — Detektif Nilai Tempat</h2><p>Tentukan nilai tempat angka yang disorot.</p><div class="gameboard"><div id="placeProblem" class="bigproblem">Angka 4 pada 3,45</div><div class="options"><button class="option" onclick="answerPlace(0)">Satuan</button><button class="option" onclick="answerPlace(1)">Persepuluhan</button><button class="option" onclick="answerPlace(2)">Perseratusan</button><button class="option" onclick="answerPlace(3)">Perseribuan</button></div><div id="placeFeedback" aria-live="polite"></div><button class="btn green" onclick="newPlace()">Tantangan baru ↻</button></div></div>
+<div class="card"><h2>🛒 Misi 3 — Soal Cerita Pilihan Ganda</h2><p>Baca ceritanya, lalu pilih jawaban yang tepat. Ada 60 soal yang diacak, dan letak jawaban benar juga diacak.</p><div class="gameboard"><div id="shopCount" class="scorebox"></div><div id="shopProblem" class="bigproblem" style="font-size:clamp(1.15rem,4vw,1.6rem)"></div><div id="shopOpts" class="options"></div><div id="shopFeedback" aria-live="polite"></div><div id="shopNext"></div></div></div>
+<div class="card"><h2>⏱️ Misi 4 — Kejar Waktu</h2><p>Jawab sebanyak mungkin dalam 45 detik. Setiap jawaban benar bernilai 15 poin. Saat waktu habis, hasil benar, salah, akurasi, dan skor akan ditampilkan.</p><div class="gameboard"><div class="scoreline"><div class="scorebox">⏳ Waktu: <span id="timer">45</span> detik</div><div class="scorebox">Benar: <span id="timedCorrect">0</span></div></div><div id="timedProblem" class="bigproblem">Tekan Mulai!</div><div id="timedOptions" class="options"></div><button class="btn primary" id="startTimed" onclick="startTimedGame()">Mulai tantangan</button><div id="timedFeedback" aria-live="polite"></div></div></div>
+<div class="card"><h2>🐸 Misi 5 — Katak Garis Bilangan</h2><p>Ketuk tanda yang tepat pada garis bilangan dari 0 sampai 1. Katak akan melompat ke sana.</p><div class="gameboard"><div id="nlProblem" class="bigproblem"></div><div class="nline"><div id="nlFrog" class="frog" aria-hidden="true">🐸</div><div id="nlTicks" class="ticks"></div></div><div id="nlFeedback" aria-live="polite"></div><button class="btn green" onclick="newNL()">Soal baru ↻</button></div></div>
+<div class="card"><h2>🎨 Misi 6 — Warnai Kotak</h2><p>Warnai kotak sesuai bilangan desimal. Seratus kotak sama dengan satu utuh.</p><div class="gameboard"><div id="kcProblem" class="bigproblem"></div><div id="kcGrid" class="kgrid"></div><div id="kcLive" class="scorebox"></div><div><button class="btn orange" onclick="addKC(10)">+10 kotak</button><button class="btn pink" onclick="addKC(1)">+1 kotak</button><button class="btn" onclick="clrKC()">Hapus ↺</button></div><button class="btn primary" onclick="chkKC()">Periksa ✔</button><div id="kcFeedback" aria-live="polite"></div><button class="btn green" onclick="newKC()">Soal baru ↻</button></div></div>
+<div class="card"><h2>🃏 Misi 7 — Pasangan Kartu</h2><p>Buka dua kartu. Cocokkan desimal dengan pecahan yang nilainya sama. Tidak ada batas waktu.</p><div class="gameboard"><div class="scorebox">Langkah: <span id="memMoves">0</span></div><div id="memGrid" class="mem"></div><div id="memFeedback" aria-live="polite"></div><button class="btn green" onclick="newMem()">Acak ulang ↻</button></div></div>
+<button class="btn primary" onclick="showPage(\'quiz\')">Lanjut ke kuis 🏆</button>
+</section>
+
+<section id="quiz" class="page">
+<div class="card"><h2>🏆 Kuis Petualang Desimal</h2><p>Sepuluh pertanyaan dari konsep dasar hingga soal cerita. Pilih satu jawaban, periksa, lalu lanjutkan.</p><div class="progress"><div id="quizProgress"></div></div><p id="quizCount">Pertanyaan 1 dari 10</p><div id="quizArea"></div><button class="btn primary" id="quizNext" onclick="nextQuiz()">Periksa jawaban</button><div id="quizResult" aria-live="polite"></div></div>
+<div style="text-align:center"><button class="btn primary" onclick="showPage('closing')">Lanjut ke penutup 🌈</button></div>
+</section>
+
+<section id="closing" class="page">
+<div class="hero"><div class="big" aria-hidden="true">🏆 🎉 🌈</div><h2>Petualangan Selesai!</h2><p class="lead">Hore, selamat ya! Kamu telah berhasil menaklukkan seluruh tantangan di Dunia Desimal! Terima kasih sudah ikut berpetualang dan belajar dengan penuh semangat dari awal sampai akhir. Sampai ketemu di petualangan seru selanjutnya!</p></div>
+</section>
+</main>
+<footer><h3>🌈 Petualangan Dunia Desimal</h3><p>Belajar dengan gembira, berhitung dengan percaya diri!</p></footer></div>
+<script>
+const $=id=>document.getElementById(id);
+let score=0,missions=0,currentSpeechText='';
+function showStage(n){if($(n).classList.contains('active'))return;document.querySelectorAll('.stage').forEach(s=>s.classList.toggle('active',s.id===n));if('speechSynthesis'in window){speechToken++;speechSynthesis.cancel()}window.scrollTo({top:0,behavior:'smooth'})}
+function showPage(id,btn){showStage('app');document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});currentSpeechText=$(id).innerText;}
+document.querySelectorAll('.page').forEach(p=>p.addEventListener('click',()=>{currentSpeechText=p.innerText;}));
+function addScore(n){score+=n;$('totalScore').textContent=score;missions++;$('missions').textContent=missions;}
+function cleanSpeech(t){
+ return String(t)
+ .replace(/[🚀🪐✨🔢🏠📚💡🎮🏆🔊⭐🎯📖🧩🛒⏱️⚖️📏🥛💰🧁🍎🍊🎉😊➡️↻■]/gu,' ')
+ .replace(/\s+/g,' ').trim()
+ .replace(/([0-9]),([0-9])/g,'$1 koma $2')
+ .replace(/[=]/g,' sama dengan ').replace(/[×]/g,' kali ')
+ .replace(/[÷]/g,' dibagi ').replace(/[+]/g,' ditambah ')
+ .replace(/[−]/g,' dikurangi ').replace(/\s+/g,' ').trim();
+}
+let voices=[], speechQueue=[], speechToken=0;
+function loadVoices(){
+ if(!('speechSynthesis'in window))return;
+ voices=speechSynthesis.getVoices();
+ let sel=$('voice'), previous=sel.value;
+ sel.innerHTML='<option value="">Suara Indonesia otomatis</option>';
+ // Tampilkan suara Indonesia dan suara yang namanya/lokalisasinya mengarah ke Makassar.
+ let preferred=voices.map((v,i)=>({v,i})).filter(x=>
+   /^id([-_]|$)/i.test(x.v.lang) || /indones|makassar|makasar/i.test(x.v.name+' '+x.v.lang)
+ );
+ preferred.forEach(({v,i})=>{
+   let o=document.createElement('option');o.value=String(i);
+   let tag=/makassar|makasar/i.test(v.name+' '+v.lang)?' • kemungkinan Makassar':'';
+   o.textContent=v.name+' ('+v.lang+')'+tag;sel.appendChild(o);
+ });
+ if(previous)sel.value=previous;
+}
+if('speechSynthesis'in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices;}
+function getSpeechSegments(page){
+ if(!page)return ['Selamat datang di Petualangan Dunia Desimal.'];
+ let nodes=[...page.querySelectorAll('h1,h2,h3,p,li,.bigproblem,.callout')];
+ let segments=[];
+ nodes.forEach(node=>{
+   if(node.closest('.options')||node.closest('button')||node.closest('.audio'))return;
+   let text=cleanSpeech(node.innerText||node.textContent||'');
+   if(!text)return;
+   if(node.tagName==='LI'){
+     let list=node.parentElement;
+     let index=[...list.children].indexOf(node)+1;
+     text='Nomor '+index+'. '+text;
+   }
+   // Separate headings, paragraphs and list items into individual spoken turns.
+   segments.push({text, pause: /^\d+\./.test(text)?850: node.matches('h2,h3')?900:550});
+ });
+ return segments.length?segments.map(x=>x):[{text:'Belum ada materi untuk dibacakan.',pause:500}];
+}
+function speakCurrent(){
+ if(!('speechSynthesis'in window)){$('audioStatus').textContent='Browser ini belum mendukung pembaca suara.';return;}
+ speechSynthesis.cancel();speechToken++;let token=speechToken;
+ speechQueue=getSpeechSegments(document.querySelector('.stage.active .page.active')||document.querySelector('.stage.active'));
+ let index=0;
+ const speakNext=()=>{
+   if(token!==speechToken||index>=speechQueue.length){
+     if(token===speechToken)$('audioStatus').textContent='Selesai membacakan bagian ini.';
+     return;
+   }
+   let part=speechQueue[index++],u=new SpeechSynthesisUtterance(part.text);
+   let selected=$('voice').value;
+   if(selected!=='')u.voice=voices[Number(selected)];
+   else {let id=voices.find(x=>/^id([-_]|$)/i.test(x.lang));if(id)u.voice=id;}
+   u.lang=(u.voice&&u.voice.lang)||'id-ID';
+   u.rate=Number($('rate').value);u.pitch=1.22;
+   u.onstart=()=>{$('audioStatus').textContent='Membacakan bagian '+index+' dari '+speechQueue.length+' dengan jeda.';};
+   u.onend=()=>{if(token===speechToken)setTimeout(speakNext,part.pause);};
+   u.onerror=()=>{if(token===speechToken)setTimeout(speakNext,part.pause);};
+   speechSynthesis.speak(u);
+ };
+ $('audioStatus').textContent='Mulai membacakan dengan jeda antarjudul, paragraf, dan poin.';
+ speakNext();
+}
+function stopSpeech(){speechToken++;speechQueue=[];if('speechSynthesis'in window)speechSynthesis.cancel();$('audioStatus').textContent='Suara dihentikan.';}
+function fmt(n){return Number(n.toFixed(2)).toString().replace('.',',');}
+let cmp={a:0,b:0,done:false};
+function newCompare(){cmp.a=Math.floor(Math.random()*990+10)/100;cmp.b=Math.floor(Math.random()*990+10)/100;if(cmp.a===cmp.b)cmp.b+=.01;cmp.done=false;$('compareProblem').textContent=fmt(cmp.a)+' atau '+fmt(cmp.b)+'?';$('compareFeedback').textContent='Pilih angka yang lebih besar.';}
+function answerCompare(side){if(cmp.done)return;cmp.done=true;let correct=cmp.a>cmp.b?'left':'right';if(side===correct){$('compareFeedback').innerHTML='<div class="feedback good">Hebat! Jawabanmu benar. +10 poin</div>';addScore(10);}else{$('compareFeedback').innerHTML='<div class="feedback try">Belum tepat. Bilangan yang lebih besar adalah '+fmt(Math.max(cmp.a,cmp.b))+'.</div>';}}
+let place={digit:4,num:'3,45',correct:2,done:false};
+const placeNames=['satuan','persepuluhan','perseratusan','perseribuan'];
+let lastPl=-1;
+function newPlace(){
+ const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+ let p,whole,tail,digs;
+ do{p=R(0,3)}while(p===lastPl);lastPl=p;
+ do{whole=R(1,9);const d=Math.max(p,1)+R(0,3-Math.max(p,1));tail=Array.from({length:d},()=>R(0,9)).join('');digs=String(whole)+tail}while(digs.split(digs[p]).length!==2);
+ place.num=whole+','+tail;place.digit=digs[p];place.correct=p;place.done=false;
+ const m=x=>'<mark class="hl">'+x+'</mark>';
+ const shown=p===0?m(whole)+','+tail:whole+','+tail.slice(0,p-1)+m(tail[p-1])+tail.slice(p);
+ $('placeProblem').innerHTML='Angka '+m(place.digit)+' pada '+shown+' menempati nilai tempat ...';
+ $('placeFeedback').textContent='Perhatikan posisi angka yang disorot, dari kiri ke kanan.';
+ document.querySelectorAll('#placeProblem ~ .options .option').forEach(b=>b.classList.remove('selected'));
+}
+function answerPlace(i){
+ if(place.done)return;place.done=true;
+ if(i===place.correct){
+  $('placeFeedback').innerHTML='<div class="feedback good">Tepat! Angka '+place.digit+' menempati nilai tempat '+placeNames[place.correct]+'. +10 poin</div>';addScore(10);
+ }else{
+  $('placeFeedback').innerHTML='<div class="feedback try">Belum tepat. Angka '+place.digit+' pada '+place.num+' menempati nilai tempat '+placeNames[place.correct]+'. Coba tantangan baru!</div>';
+ }
+}
+const STORY=[['Ibu membeli 2,5 kg apel dan 1,25 kg jeruk di pasar. Berapa kg total belanjaan buah Ibu?', '3,75'], ['Ayah memetik 3,4 kg mangga dan 1,8 kg rambutan dari kebun. Berapa kg jumlah buah yang dipetik Ayah?', '5,2'], ['Di dapur ada 4,5 kg beras. Ibu memasaknya sebanyak 1,75 kg. Berapa kg sisa beras Ibu sekarang?', '2,75'], ['Rani membeli 0,75 kg gula pasir dan 1,5 kg tepung terigu untuk membuat kue. Berapa kg berat seluruh belanjaan Rani?', '2,25'], ['Seorang pedagang memiliki 5 kg semangka. Sebanyak 2,35 kg sudah terjual. Berapa kg sisa semangka pedagang itu?', '2,65'], ['Budi membawa 1,2 kg duku dan 0,85 kg kelengkeng. Berapa kg total buah yang dibawa Budi?', '2,05'], ['Nenek membeli 2,25 kg salak. Sesampainya di rumah, 0,5 kg salak diberikan kepada tetangga. Berapa kg sisa salak Nenek?', '1,75'], ['Berat tas sekolah Edo 2,4 kg, sedangkan berat tas Beni 1,9 kg. Berapa kg jumlah berat kedua tas mereka?', '4,3'], ['Ibu membeli 3 kg telur ayam. Saat membuat roti, telur terpakai sebanyak 1,25 kg. Berapa kg sisa telur Ibu?', '1,75'], ['Pak Tono memanen 6,5 kg tomat dan 4,75 kg cabai. Berapa kg total hasil panen Pak Tono?', '11,25'], ['Kakak memiliki pita merah sepanjang 1,5 meter dan pita biru sepanjang 2,25 meter. Berapa meter panjang seluruh pita Kakak?', '3,75'], ['Ibu membeli kain batik sepanjang 4,5 meter. Sebanyak 2,75 meter dipakai untuk menjahit baju. Berapa meter sisa kain Ibu?', '1,75'], ['Panjang tali rafia Edo 3,2 meter, lalu disambung lagi dengan tali sepanjang 1,85 meter. Berapa meter panjang tali Edo sekarang?', '5,05'], ['Seorang penjahit memotong 1,4 meter kain dari gulungan kain sepanjang 5 meter. Berapa meter sisa kain di gulungan tersebut?', '3,6'], ['Siti mempunyai pita sepanjang 2,6 meter. Ia memotongnya 0,75 meter untuk menghias kado ulang tahun. Berapa meter sisa pita Siti?', '1,85'], ['Ayah membeli 3,5 meter kawat dan 2,45 meter tali tambang. Berapa meter total panjang kawat dan tali yang dibeli Ayah?', '5,95'], ['Panjang kain gorden ruang tamu 2,8 meter, sedangkan gorden kamar 1,65 meter. Berapa meter selisih panjang kedua gorden itu?', '1,15'], ['Lani menyambung dua helai benang yang panjangnya 0,8 meter dan 1,35 meter. Berapa meter panjang benang Lani sekarang?', '2,15'], ['Paman memiliki bambu sepanjang 4,2 meter. Bambu itu dipotong 1,5 meter untuk tiang bendera. Berapa meter sisa bambu Paman?', '2,7'], ['Dayu membeli 1,75 meter kain flanel kuning dan 1,5 meter kain flanel hijau untuk prakarya. Berapa meter total kain flanel yang dibeli Dayu?', '3,25'],
+['Bu Sari membeli 1,75 kg bawang merah dan 0,5 kg bawang putih. Berapa kg total bawang yang dibeli Bu Sari?','2,25'],['Pak Joko memiliki 8 kg pupuk. Sebanyak 3,25 kg dipakai untuk kebun sayur. Berapa kg sisa pupuk Pak Joko?','4,75'],['Nina membawa 2,3 kg buah anggur dan 1,45 kg buah apel ke rumah nenek. Berapa kg seluruh buah yang dibawa Nina?','3,75'],['Di lumbung ada 7,5 kg jagung. Sebanyak 2,6 kg jagung dijual. Berapa kg sisa jagung di lumbung?','4,9'],['Beni menimbang kelinci 1,85 kg dan ayam 2,4 kg. Berapa kg jumlah berat kelinci dan ayam itu?','4,25'],['Warung Bu Ani punya 6,25 kg tepung. Sebanyak 4,5 kg tepung terjual. Berapa kg sisa tepung di warung?','1,75'],['Kakak membeli 0,85 kg daging sapi dan 1,6 kg ikan. Berapa kg total daging dan ikan yang dibeli kakak?','2,45'],['Paman memanen 9 kg singkong. Sebanyak 4,75 kg diberikan kepada tetangga. Berapa kg sisa singkong Paman?','4,25'],['Karung pertama berisi 12,5 kg beras dan karung kedua berisi 8,75 kg beras. Berapa kg jumlah beras di kedua karung?','21,25'],['Dina membeli 3,2 kg jeruk. Sesampainya di rumah, 1,45 kg jeruk dimakan bersama keluarga. Berapa kg sisa jeruk Dina?','1,75'],['Seorang petani memetik 5,6 kg cabai pada hari Senin dan 3,85 kg cabai pada hari Selasa. Berapa kg cabai yang dipetik petani itu?','9,45'],['Toko roti memiliki 10 kg gula. Hari ini terpakai 6,35 kg gula. Berapa kg sisa gula di toko roti?','3,65'],['Ayah membeli 2,75 kg ikan dan 1,4 kg udang di pasar. Berapa kg berat seluruh belanjaan Ayah?','4,15'],['Berat tas Rina 3,6 kg. Setelah buku dikeluarkan, beratnya menjadi 2,85 kg. Berapa kg berat buku yang dikeluarkan?','0,75'],['Pak Ali memiliki 4,2 kg kacang tanah. Ia membeli lagi 2,95 kg kacang tanah. Berapa kg kacang tanah Pak Ali sekarang?','7,15'],['Ibu membuat kue dengan 1,25 kg tepung beras dan 0,75 kg tepung terigu. Berapa kg seluruh tepung yang dipakai Ibu?','2'],['Pedagang memiliki 15 kg anggur. Sebanyak 7,4 kg sudah terjual. Berapa kg sisa anggur pedagang itu?','7,6'],['Berat kardus berisi buku 5,5 kg dan kardus berisi mainan 3,75 kg. Berapa kg selisih berat kedua kardus itu?','1,75'],['Pak RT membagikan 2,5 kg gula kepada warga pada hari pertama dan 3,25 kg pada hari kedua. Berapa kg gula yang telah dibagikan?','5,75'],['Persediaan beras di gudang 20 kg. Sebanyak 12,75 kg beras diangkut keluar. Berapa kg sisa beras di gudang?','7,25'],
+['Ibu membeli pita satin 3,4 meter dan pita renda 1,75 meter. Berapa meter total pita yang dibeli Ibu?','5,15'],['Tali jemuran Bu Dewi panjangnya 6 meter. Karena rusak, 1,35 meter tali dipotong. Berapa meter sisa tali jemuran Bu Dewi?','4,65'],['Pak Tukang memiliki kayu 2,6 meter dan papan 3,45 meter. Berapa meter jumlah panjang kayu dan papan itu?','6,05'],['Sebuah pipa air panjangnya 8,5 meter. Pipa itu dipotong 3,75 meter. Berapa meter sisa pipa tersebut?','4,75'],['Kain seprai panjangnya 2,85 meter dan kain sarung bantal 0,9 meter. Berapa meter panjang kedua kain jika disambung?','3,75'],['Penjahit memiliki kain 10 meter. Sebanyak 4,6 meter dipakai untuk membuat seragam. Berapa meter sisa kain penjahit?','5,4'],['Tinggi pohon mangga 5,4 meter dan tinggi pohon jambu 3,85 meter. Berapa meter selisih tinggi kedua pohon?','1,55'],['Ayah menarik kabel listrik sepanjang 4,25 meter, lalu menyambungnya dengan kabel sepanjang 2,5 meter. Berapa meter panjang kabel sekarang?','6,75'],['Pak Dedi memiliki bambu sepanjang 7,3 meter. Sebanyak 2,45 meter bambu dipakai untuk pagar. Berapa meter sisa bambu Pak Dedi?','4,85'],['Lani membeli 1,65 meter kain katun dan 2,35 meter kain sutra. Berapa meter total kain yang dibeli Lani?','4'],
+['Botol pertama berisi 1,25 liter air dan botol kedua berisi 0,75 liter air. Berapa liter jumlah air di kedua botol?','2'],['Sebuah ember berisi 5 liter air. Sebanyak 1,75 liter air tumpah. Berapa liter sisa air dalam ember?','3,25'],['Ibu membeli 2,5 liter minyak goreng dan 1,25 liter minyak kelapa. Berapa liter total minyak yang dibeli Ibu?','3,75'],['Tangki motor berisi 4,5 liter bensin. Setelah dipakai berkendara, bensin terpakai 1,85 liter. Berapa liter sisa bensin di tangki?','2,65'],['Dayu menuang 0,6 liter susu ke gelas besar dan 0,45 liter susu ke gelas kecil. Berapa liter susu yang dituang Dayu?','1,05'],['Drum berisi 12 liter air. Sebanyak 4,5 liter air dipakai untuk menyiram kebun. Berapa liter sisa air dalam drum?','7,5'],['Pak Eko membeli 3,6 liter cat putih dan 2,45 liter cat biru. Berapa liter jumlah cat yang dibeli Pak Eko?','6,05'],['Teko berisi 2,2 liter teh. Sebanyak 0,85 liter teh sudah diminum. Berapa liter sisa teh dalam teko?','1,35'],['Kolam kecil sudah berisi 8,75 liter air. Ditambahkan lagi 3,5 liter air. Berapa liter air dalam kolam sekarang?','12,25'],['Jerigen A berisi 6,5 liter minyak tanah dan jerigen B berisi 4,75 liter. Berapa liter selisih isi kedua jerigen?','1,75']];
+let sh={bag:[],q:[],i:0,ok:0,tr:0,done:false,ans:0,last:[],ex:''};
+function newShop(){if(sh.bag.length<10)sh.bag=STORY.map((_,i)=>i).sort(()=>Math.random()-.5);sh.q=sh.bag.splice(0,10);sh.i=0;sh.ok=0;sh.last=[];showShop()}
+function showShop(){
+ if(sh.i>=sh.q.length){$('shopCount').textContent='Ronde selesai! 🎉';$('shopProblem').textContent='Kamu benar di percobaan pertama: '+sh.ok+' dari '+sh.q.length+' soal.';$('shopOpts').innerHTML='';$('shopFeedback').textContent='';$('shopNext').innerHTML='<button class="btn green" onclick="newShop()">Ronde baru ↻</button>';return}
+ const t=STORY[sh.q[sh.i]][0],ans=+STORY[sh.q[sh.i]][1].replace(',','.');
+ const n=(t.match(/\d+(?:,\d+)?/g)||[]).slice(0,2).map(x=>+x.replace(',','.')),add=Math.abs(n[0]+n[1]-ans)<.001,opp=add?Math.abs(n[0]-n[1]):n[0]+n[1];
+ const u=/meter/.test(t)?' meter':/liter/.test(t)?' liter':' kg',fm=x=>String(Number(x.toFixed(2))).replace('.',','),F=x=>fm(x)+u;
+ const d=[opp,...[ans+.1,ans-.1,ans+1,ans-1,ans+.5,ans-.5].sort(()=>Math.random()-.5)].filter((x,i,a)=>x>0&&Math.abs(x-ans)>.001&&a.findIndex(y=>Math.abs(y-x)<.001)===i).slice(0,3);
+ let p;do{p=Math.floor(Math.random()*4)}while(sh.last[0]===p&&sh.last[1]===p);sh.last=[p,sh.last[0]];
+ const o=d.map(F);o.splice(p,0,F(ans));sh.ans=p;sh.tr=0;sh.done=false;
+ sh.ex=add?fm(n[0])+' + '+fm(n[1])+' = '+fm(ans):fm(Math.max(n[0],n[1]))+' − '+fm(Math.min(n[0],n[1]))+' = '+fm(ans);
+ $('shopCount').textContent='Soal '+(sh.i+1)+' dari '+sh.q.length;$('shopProblem').textContent=t;$('shopNext').innerHTML='';
+ $('shopOpts').innerHTML=o.map((x,j)=>'<button class="option" onclick="pickShop('+j+',this)">'+String.fromCharCode(65+j)+'. '+x+'</button>').join('');$('shopFeedback').textContent='Pilih jawaban yang tepat.'}
+function pickShop(j,el){if(sh.done)return;
+ if(j===sh.ans){sh.done=true;el.classList.add('selected');const first=!sh.tr;if(first){sh.ok++;addScore(10)}$('shopFeedback').innerHTML='<div class="feedback good">Benar! '+sh.ex+(first?'. +10 poin':'')+'</div>';sh.i++;$('shopNext').innerHTML='<button class="btn primary" onclick="showShop()">'+(sh.i>=sh.q.length?'Lihat hasil ⭐':'Lanjut ➜')+'</button>'}
+ else{sh.tr++;el.disabled=true;el.style.opacity='.4';$('shopFeedback').innerHTML='<div class="feedback try">Belum tepat. Cek kata kuncinya: digabung berarti tambah, dipakai atau sisa berarti kurang. Coba lagi!</div>'}}
+const U=['nol','satu','dua','tiga','empat','lima','enam','tujuh','delapan','sembilan'],PLN=['satuan','persepuluhan','perseratusan','perseribuan'],PLH=['tepat di depan koma','angka pertama di belakang koma','angka kedua di belakang koma','angka ketiga di belakang koma'];
+const RR=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),FM=x=>String(Number(x.toFixed(6))).replace('.',','),S2=x=>x.toFixed(2).replace('.',','),wd=n=>n<10?U[n]:n==10?'sepuluh':n==11?'sebelas':n<20?U[n-10]+' belas':U[Math.floor(n/10)]+' puluh'+(n%10?' '+U[n%10]:'');
+const PRG=[
+()=>{const w=RR(1,99),ds=Array.from({length:RR(1,3)},()=>RR(0,9));ds[ds.length-1]=RR(1,9);return{q:'Tulis dengan angka: “'+wd(w)+' koma '+ds.map(x=>U[x]).join(' ')+'”.',a:w+','+ds.join(''),h:'Angka di belakang koma dibaca satu per satu. Tulis angka sebelum koma, lalu koma, lalu angka-angkanya.'}},
+()=>{let w,ds,p,g;do{w=RR(1,9);ds=String(RR(100,999));g=String(w)+ds;p=RR(0,3)}while(g.split(g[p]).length!==2);return{q:'Pada bilangan '+w+','+ds+', angka '+g[p]+' menempati nilai tempat ...',a:PLN[p],h:'Angka '+g[p]+' berada di posisi '+PLH[p]+'.'}},
+()=>{const c=RR(1,99),d=c%10==0?'0,'+c/10:c<10?'0,0'+c:'0,'+c;return{q:'Tulis '+d+' dalam bentuk persen.',a:c+'%',h:d+' = '+c+'/100, jadi '+c+'%.'}},
+()=>{const c=RR(1,99);return{q:'Tulis '+c+'% dalam bentuk desimal.',a:FM(c/100),h:c+'% = '+c+'/100.'}},
+()=>{const F=[[1,2],[1,4],[3,4],[1,5],[2,5],[3,5],[4,5],[1,10],[7,10],[3,20],[9,20],[7,25],[3,25],[11,20],[13,20]],x=F[RR(0,F.length-1)];return{q:'Ubah pecahan '+x[0]+'/'+x[1]+' menjadi bilangan desimal.',a:FM(x[0]/x[1]),h:'Ubah penyebut menjadi 10 atau 100, lalu tulis sebagai desimal.'}},
+()=>{const x=RR(12,990)/100,m=[10,100][RR(0,1)],mul=RR(0,1)==0;return{q:'Hitung '+FM(x)+(mul?' × ':' ÷ ')+m+'.',a:FM(mul?x*m:x/m),h:(mul?'Dikali ':'Dibagi ')+m+', koma geser '+(m==10?1:2)+' langkah ke '+(mul?'kanan.':'kiri.')}},
+()=>{const x=RR(2,19)/10,y=RR(2,9)/10,i=Math.round(x*10),j=Math.round(y*10);return{q:'Hitung '+FM(x)+' × '+FM(y)+'.',a:FM(x*y),h:i+' × '+j+' = '+i*j+'. Ada 2 angka di belakang koma, jadi pasang koma 2 langkah dari belakang.'}},
+()=>{const q=RR(2,15),b=RR(2,9)/10,a=Number((q*b).toFixed(1));return{q:'Hitung '+FM(a)+' ÷ '+FM(b)+'.',a:String(q),h:'Geser koma 1 langkah ke kanan pada kedua angka: '+Math.round(a*10)+' ÷ '+Math.round(b*10)+'.'}},
+()=>{const x=RR(120,990)/100,add=RR(0,1)==0,y=add?RR(10,400)/100:RR(10,Math.round(x*100)-10)/100;return{q:'Hitung '+FM(x)+(add?' + ':' − ')+FM(y)+'.',a:FM(add?x+y:x-y),h:'Sejajarkan tanda koma, tambahkan nol di belakang jika perlu, lalu '+(add?'jumlahkan':'kurangkan')+' seperti bilangan biasa.'}},
+()=>{let x;do{x=RR(11,990)/(RR(0,1)?10:100)}while(Number.isInteger(x));const t=Math.floor(Math.round(x*100)/10)%10;return{q:'Bulatkan '+FM(x)+' ke satuan terdekat.',a:String(Math.round(x)),h:'Lihat angka persepuluhannya, yaitu '+t+'. Angka 5 sampai 9 dibulatkan naik, angka 0 sampai 4 dibulatkan turun.'}},
+()=>{let a,b;do{a=RR(1,9)/10;b=RR(11,99)/100}while(Math.abs(a-b)<1e-9);const sw=RR(0,1)==0;return{q:'Mana yang lebih besar: '+FM(sw?a:b)+' atau '+FM(sw?b:a)+'? (ketik angkanya)',a:FM(Math.max(a,b)),h:'Samakan jumlah angka di belakang koma: '+S2(a)+' dan '+S2(b)+'. Lalu bandingkan.'}}
+];
+let pr={a:'',h:'',done:false,tr:0,last:-1};
+function newPractice(){let t;do{t=Math.floor(Math.random()*PRG.length)}while(t===pr.last);pr.last=t;const g=PRG[t]();pr.a=g.a;pr.h=g.h;pr.tr=0;pr.done=false;$('practiceQuestion').innerHTML='<h3>'+g.q+'</h3>';$('practiceAnswer').value='';$('practiceFeedback').textContent=''}
+function checkPractice(){if(pr.done)return;const v=$('practiceAnswer').value.trim().toLowerCase().replace(/\s/g,''),a=pr.a,f=x=>parseFloat(x.replace('%','').replace(',','.'));let ok;
+ if(/^[\d,]+%?$/.test(a))ok=/^[\d.,]+%?$/.test(v)&&Math.abs(f(v)-f(a))<1e-9&&(a.endsWith('%')||!v.endsWith('%'));else ok=v===a;
+ if(ok){pr.done=true;const first=!pr.tr;if(first)addScore(5);$('practiceFeedback').innerHTML='<div class="feedback good">Benar! Jawabannya '+a+'.'+(first?' +5 poin':'')+'</div>'}else{pr.tr++;$('practiceFeedback').innerHTML='<div class="feedback try">Belum tepat. Petunjuk: '+pr.h+'</div>'}}
+function nextPractice(){newPractice()}
+$('practiceAnswer').addEventListener('keydown',e=>{if(e.key==='Enter')checkPractice()});
+$('practiceAnswer').addEventListener('keydown',e=>{if(e.key==='Enter')checkPractice();});
+let timerInt=null,timeLeft=45,timedCorrect=0,timedWrong=0,timedAttempted=0,timedAnswer=0,timedRoundScore=0;
+function timedQuestion(){
+ let a=(Math.floor(Math.random()*90)+10)/100,b=(Math.floor(Math.random()*90)+10)/100;
+ timedAnswer=Number((a+b).toFixed(2));
+ $('timedProblem').textContent=fmt(a)+' + '+fmt(b)+' = ?';
+ let vals=[timedAnswer,Number((timedAnswer+.1).toFixed(2)),Number(Math.max(0,timedAnswer-.1).toFixed(2)),Number((timedAnswer+.2).toFixed(2))];
+ vals=[...new Set(vals)].sort(()=>Math.random()-.5);
+ $('timedOptions').innerHTML='';
+ vals.forEach(v=>{
+  let btn=document.createElement('button');btn.className='option';btn.textContent=fmt(v);
+  btn.onclick=()=>{
+   if(!timerInt)return;
+   timedAttempted++;
+   if(Math.abs(v-timedAnswer)<.001){
+    timedCorrect++;timedRoundScore+=15;addScore(15);
+    $('timedFeedback').textContent='Benar! +15 poin. Lanjut ke soal berikutnya.';
+   }else{
+    timedWrong++;
+    $('timedFeedback').textContent='Belum tepat. Jawaban yang benar '+fmt(timedAnswer)+'. Tetap semangat!';
+   }
+   $('timedCorrect').textContent=timedCorrect;
+   timedQuestion();
+  };
+  $('timedOptions').appendChild(btn);
+ });
+}
+function finishTimedGame(){
+ clearInterval(timerInt);timerInt=null;
+ $('timedProblem').textContent='Misi selesai!';
+ $('timedOptions').innerHTML='';
+ $('startTimed').textContent='Main lagi';
+ $('timedFeedback').innerHTML=
+  '<div class="feedback good"><h3>🏅 Hasil Tantangan 45 Detik</h3>'+
+  '<p>Skor misi: <b>'+timedRoundScore+' poin</b></p>'+
+  '<p>Jumlah soal dijawab: <b>'+timedAttempted+'</b></p>'+
+  '<p>Jawaban benar: <b>'+timedCorrect+'</b></p>'+
+  '<p>Jawaban salah: <b>'+timedWrong+'</b></p>'+
+  '<p>Akurasi: <b>'+(timedAttempted?Math.round(timedCorrect/timedAttempted*100):0)+'%</b></p>'+
+  '<p>'+(timedCorrect>=8?'Luar biasa! Kamu penjelajah desimal hebat!':timedCorrect>=4?'Bagus! Terus latih ketelitianmu.':'Ayo belajar lagi dan coba tantangan sekali lagi!')+'</p></div>';
+}
+function startTimedGame(){
+ clearInterval(timerInt);timeLeft=45;timedCorrect=0;timedWrong=0;timedAttempted=0;timedRoundScore=0;
+ $('timer').textContent=timeLeft;$('timedCorrect').textContent='0';
+ $('startTimed').textContent='Tantangan sedang berjalan';
+ $('timedFeedback').textContent='Semangat! Setiap jawaban benar mendapat 15 poin.';
+ timedQuestion();
+ timerInt=setInterval(()=>{
+  timeLeft--;$('timer').textContent=timeLeft;
+  if(timeLeft<=0)finishTimedGame();
+ },1000);
+}
+let quiz=[];
+const PL={satuan:'angka tepat di depan koma',persepuluhan:'angka pertama di belakang koma',perseratusan:'angka kedua di belakang koma',perseribuan:'angka ketiga di belakang koma'};
+const BANK=[
+[['tujuh koma dua lima','7,25','7,025','72,5','0,725'],['tiga koma nol delapan','3,08','3,8','30,8','3,008'],['dua belas koma lima','12,5','12,05','1,25','125'],['nol koma enam tiga','0,63','0,063','63','6,3'],['sembilan koma nol lima','9,05','9,5','95','9,005'],['lima koma satu dua','5,12','5,012','51,2','0,512'],['empat belas koma sembilan','14,9','14,09','1,49','149'],['satu koma nol nol tujuh','1,007','1,07','1,7','17'],['dua puluh koma empat','20,4','20,04','2,04','204'],['delapan koma tiga enam','8,36','8,036','83,6','0,836']],
+[['24,819','persepuluhan','8','2','4','1'],['36,254','perseratusan','5','2','4','6'],['7,193','perseribuan','3','7','1','9'],['58,462','satuan','8','5','4','6'],['91,706','persepuluhan','7','9','1','0'],['3,085','perseribuan','5','3','0','8'],['62,937','perseratusan','3','9','7','2'],['80,654','persepuluhan','6','8','5','4'],['17,325','satuan','7','1','3','5'],['46,078','perseribuan','8','0','7','6']],
+[['0,09','9%','90%','19%','0,9%'],['0,45','45%','4,5%','54%','0,45%'],['0,6','60%','6%','0,6%','66%'],['0,07','7%','70%','0,7%','17%'],['0,85','85%','8,5%','58%','0,85%'],['0,5','50%','5%','0,5%','55%'],['0,32','32%','3,2%','23%','0,32%'],['0,03','3%','30%','0,3%','13%'],['0,9','90%','9%','0,9%','99%'],['0,18','18%','1,8%','81%','0,18%']],
+[['Dalam lomba lompat jauh di sekolah, jarak lompatan Edo 1,4 m, Beni 1,25 m, Siti 1,38 m, dan Dayu 1,5 m. Siapakah yang lompatannya paling jauh?','Dayu','Edo','Beni','Siti','Dayu, karena 1,50 m paling besar dibanding 1,40 m; 1,38 m; dan 1,25 m.'],
+['Berat badan Rudi 32,4 kg, Tia 32,04 kg, Gita 32,5 kg, dan Joko 32,45 kg. Siapakah yang paling berat?','Gita','Rudi','Tia','Joko','Gita, karena 32,50 kg paling besar dibanding 32,45; 32,40; dan 32,04.'],
+['Waktu lari Ali 12,8 detik, Budi 12,08 detik, Cika 12,5 detik, dan Dina 12,75 detik. Siapakah yang larinya paling cepat (waktunya paling kecil)?','Budi','Ali','Cika','Dina','Budi, karena 12,08 detik adalah waktu yang paling kecil.'],
+['Tinggi tanaman Mawar 0,7 m, Melati 0,65 m, Anggrek 0,72 m, dan Kenanga 0,6 m. Tanaman manakah yang paling tinggi?','Anggrek','Mawar','Melati','Kenanga','Anggrek, karena 0,72 m lebih besar dari 0,70 m; 0,65 m; dan 0,60 m.'],
+['Isi botol A 1,25 liter, B 1,5 liter, C 1,05 liter, dan D 1,2 liter. Botol manakah yang isinya paling sedikit?','Botol C','Botol A','Botol B','Botol D','Botol C, karena 1,05 liter paling kecil dibanding 1,25; 1,50; dan 1,20.'],
+['Panjang tali P 2,3 m, Q 2,03 m, R 2,33 m, dan S 2,29 m. Tali manakah yang paling panjang?','Tali R','Tali P','Tali Q','Tali S','Tali R, karena 2,33 m > 2,30 m > 2,29 m > 2,03 m.'],
+['Berat kardus A 5,6 kg, B 5,06 kg, C 5,66 kg, dan D 5,16 kg. Kardus manakah yang paling ringan?','Kardus B','Kardus A','Kardus C','Kardus D','Kardus B, karena 5,06 kg paling kecil dibanding 5,60; 5,66; dan 5,16.'],
+['Jarak rumah ke sekolah: Ani 1,4 km, Bayu 1,04 km, Cici 1,44 km, dan Doni 1,41 km. Rumah siapakah yang paling dekat dengan sekolah?','Bayu','Ani','Cici','Doni','Bayu, karena 1,04 km adalah jarak yang paling kecil.'],
+['Lemparan bola Eka 8,9 m, Fani 8,09 m, Gina 8,95 m, dan Hani 8,5 m. Siapakah yang lemparannya paling jauh?','Gina','Eka','Fani','Hani','Gina, karena 8,95 m > 8,90 m > 8,50 m > 8,09 m.'],
+['Panjang pita merah 3,2 m, biru 3,02 m, hijau 3,25 m, dan kuning 3,5 m. Pita warna apa yang paling panjang?','Kuning','Merah','Biru','Hijau','Kuning, karena 3,50 m > 3,25 m > 3,20 m > 3,02 m.']],
+[['Ayah memetik buah semangka seberat 4,38 kg. Berat semangka tersebut jika dibulatkan ke satuan terdekat adalah ....','4 kg','4,3 kg','4,4 kg','5 kg'],['Panjang kain 7,6 meter jika dibulatkan ke satuan terdekat adalah ....','8 meter','7 meter','7,5 meter','6 meter'],['Tinggi badan Dina 1,45 m. Jika dibulatkan ke satuan terdekat menjadi ....','1 m','2 m','1,5 m','1,4 m'],['Berat ikan hasil tangkapan Paman 2,9 kg. Jika dibulatkan ke satuan terdekat menjadi ....','3 kg','2 kg','2,5 kg','4 kg'],['Isi sebuah ember 5,49 liter. Jika dibulatkan ke satuan terdekat menjadi ....','5 liter','6 liter','5,5 liter','5,4 liter'],['Jarak rumah Sinta ke pasar 9,51 km. Jika dibulatkan ke satuan terdekat menjadi ....','10 km','9 km','9,5 km','11 km'],['Berat mangga yang dibeli Ibu 3,27 kg. Jika dibulatkan ke satuan terdekat menjadi ....','3 kg','4 kg','3,3 kg','3,2 kg'],['Panjang tali rafia 12,78 meter. Jika dibulatkan ke satuan terdekat menjadi ....','13 meter','12 meter','12,8 meter','14 meter'],['Volume air dalam gelas 0,82 liter. Jika dibulatkan ke satuan terdekat menjadi ....','1 liter','0 liter','0,8 liter','0,9 liter'],['Berat beras dalam karung kecil 6,05 kg. Jika dibulatkan ke satuan terdekat menjadi ....','6 kg','7 kg','6,1 kg','5 kg']],
+[['Pecahan 3/4 jika diubah menjadi bilangan desimal adalah ....','0,75','0,34','0,50','1,25','3/4 = (3 × 25)/(4 × 25) = 75/100 = 0,75.'],['Pecahan 1/2 jika diubah menjadi bilangan desimal adalah ....','0,5','0,12','1,2','0,2','1/2 = 5/10 = 0,5.'],['Pecahan 1/4 jika diubah menjadi bilangan desimal adalah ....','0,25','0,14','0,4','1,4','1/4 = 25/100 = 0,25.'],['Pecahan 3/5 jika diubah menjadi bilangan desimal adalah ....','0,6','0,35','3,5','0,53','3/5 = 6/10 = 0,6.'],['Pecahan 7/10 jika diubah menjadi bilangan desimal adalah ....','0,7','0,07','7,1','1,7','7/10 berarti tujuh persepuluhan, yaitu 0,7.'],['Pecahan 9/100 jika diubah menjadi bilangan desimal adalah ....','0,09','0,9','0,009','9,1','9/100 berarti sembilan perseratusan, yaitu 0,09.'],['Pecahan 2/5 jika diubah menjadi bilangan desimal adalah ....','0,4','0,25','2,5','0,2','2/5 = 4/10 = 0,4.'],['Pecahan 1/5 jika diubah menjadi bilangan desimal adalah ....','0,2','0,15','1,5','0,5','1/5 = 2/10 = 0,2.'],['Pecahan 4/5 jika diubah menjadi bilangan desimal adalah ....','0,8','0,45','4,5','0,4','4/5 = 8/10 = 0,8.'],['Pecahan 9/20 jika diubah menjadi bilangan desimal adalah ....','0,45','0,9','9,2','0,92','9/20 = (9 × 5)/(20 × 5) = 45/100 = 0,45.']],
+[['Tebal 1 lembar kertas karton adalah 0,12 mm. Jika ditumpuk sebanyak 100 lembar, berapa milimeter tinggi tumpukan karton tersebut?','12 mm','1,2 mm','120 mm','0,012 mm','Koma bergeser 2 langkah ke kanan: 0,12 × 100 = 12 mm.'],['Satu botol berisi 0,35 liter air. Berapa liter air dalam 10 botol?','3,5 liter','35 liter','0,035 liter','0,45 liter','Dikali 10, koma geser 1 langkah ke kanan: 0,35 × 10 = 3,5 liter.'],['Panjang 1 klip kertas 2,4 cm. Jika 100 klip disambung berderet, berapa cm panjangnya?','240 cm','24 cm','2.400 cm','2,4 cm','Dikali 100, koma geser 2 langkah ke kanan: 2,4 × 100 = 240 cm.'],['Satu kantong gula beratnya 1,25 kg. Berapa kg berat 10 kantong gula?','12,5 kg','1,25 kg','125 kg','0,125 kg','Dikali 10, koma geser 1 langkah ke kanan: 1,25 × 10 = 12,5 kg.'],['Pita sepanjang 36,5 cm dipotong menjadi 10 bagian sama panjang. Panjang tiap bagian adalah ....','3,65 cm','0,365 cm','365 cm','36,05 cm','Dibagi 10, koma geser 1 langkah ke kiri: 36,5 ÷ 10 = 3,65 cm.'],['Tebal 1 buku tulis 0,18 cm. Jika 100 buku ditumpuk, berapa cm tingginya?','18 cm','1,8 cm','180 cm','0,018 cm','Dikali 100, koma geser 2 langkah ke kanan: 0,18 × 100 = 18 cm.'],['Beras 45,6 kg dibagi sama banyak ke dalam 100 kantong. Berat beras tiap kantong adalah ....','0,456 kg','4,56 kg','456 kg','0,0456 kg','Dibagi 100, koma geser 2 langkah ke kiri: 45,6 ÷ 100 = 0,456 kg.'],['Setiap hari Budi minum 0,25 liter susu. Berapa liter susu yang diminum selama 10 hari?','2,5 liter','0,025 liter','25 liter','2,25 liter','Dikali 10, koma geser 1 langkah ke kanan: 0,25 × 10 = 2,5 liter.'],['Berat 1 buku cerita 0,32 kg. Berapa kg berat 100 buku cerita?','32 kg','3,2 kg','320 kg','0,032 kg','Dikali 100, koma geser 2 langkah ke kanan: 0,32 × 100 = 32 kg.'],['Tali sepanjang 82 meter dipotong menjadi 10 bagian sama panjang. Panjang tiap potongan adalah ....','8,2 meter','0,82 meter','820 meter','8,02 meter','Dibagi 10, koma geser 1 langkah ke kiri: 82 ÷ 10 = 8,2 meter.']],
+[['Seekor kelinci sekali melompat sejauh 0,6 meter. Jika kelinci itu melompat sebanyak 8 kali, total jarak yang ditempuh kelinci adalah ....','4,8 meter','0,48 meter','6,8 meter','48 meter','6 × 8 = 48 dengan 1 angka di belakang koma, jadi 4,8 meter.'],['Seekor siput merayap 0,4 meter setiap menit. Setelah 7 menit, jarak yang ditempuh siput adalah ....','2,8 meter','0,28 meter','28 meter','4,7 meter','4 × 7 = 28 dengan 1 angka di belakang koma, jadi 2,8 meter.'],['Satu gelas berisi 0,25 liter air. Jika ada 6 gelas, berapa liter air seluruhnya?','1,5 liter','0,15 liter','15 liter','6,25 liter','25 × 6 = 150 dengan 2 angka di belakang koma, jadi 1,50 = 1,5 liter.'],['Hasil dari 1,2 × 0,3 adalah ....','0,36','3,6','0,036','36','12 × 3 = 36; ada 2 angka di belakang koma, jadi 0,36.'],['Ibu membeli 5 kantong jeruk, tiap kantong beratnya 1,5 kg. Berat seluruh jeruk adalah ....','7,5 kg','0,75 kg','75 kg','6,5 kg','15 × 5 = 75 dengan 1 angka di belakang koma, jadi 7,5 kg.'],['Hasil dari 0,7 × 0,9 adalah ....','0,63','6,3','0,063','63','7 × 9 = 63; ada 2 angka di belakang koma, jadi 0,63.'],['Untuk menghias 1 kado dibutuhkan pita 0,3 meter. Jika ada 9 kado, pita yang dibutuhkan adalah ....','2,7 meter','0,27 meter','27 meter','3,9 meter','3 × 9 = 27 dengan 1 angka di belakang koma, jadi 2,7 meter.'],['Hasil dari 2,5 × 0,4 adalah ....','1','10','0,1','100','25 × 4 = 100; ada 2 angka di belakang koma, jadi 1,00 = 1.'],['Satu botol berisi 0,75 liter sirup. Jika ada 4 botol, berapa liter sirup seluruhnya?','3 liter','0,3 liter','30 liter','4,75 liter','75 × 4 = 300 dengan 2 angka di belakang koma, jadi 3,00 = 3 liter.'],['Hasil dari 0,8 × 0,5 adalah ....','0,4','4','0,04','40','8 × 5 = 40; ada 2 angka di belakang koma, jadi 0,40 = 0,4.']],
+[['Hasil dari 4,5 ÷ 0,5 adalah ....','9','0,9','4','90','Sama-sama geser koma 1 langkah menjadi 45 ÷ 5 = 9.'],['Hasil dari 8,4 ÷ 0,7 adalah ....','12','1,2','120','0,12','Sama-sama geser koma 1 langkah menjadi 84 ÷ 7 = 12.'],['Hasil dari 6,4 ÷ 0,8 adalah ....','8','0,8','80','0,08','Sama-sama geser koma 1 langkah menjadi 64 ÷ 8 = 8.'],['Hasil dari 4,2 ÷ 0,6 adalah ....','7','0,7','70','2,4','Sama-sama geser koma 1 langkah menjadi 42 ÷ 6 = 7.'],['Hasil dari 7,5 ÷ 0,5 adalah ....','15','1,5','150','3,75','Sama-sama geser koma 1 langkah menjadi 75 ÷ 5 = 15.'],['Pita sepanjang 5,4 meter dipotong-potong, tiap potong 0,6 meter. Banyak potongan pita adalah ....','9 potong','0,9 potong','90 potong','6 potong','5,4 ÷ 0,6, geser koma 1 langkah menjadi 54 ÷ 6 = 9 potong.'],['Hasil dari 1,8 ÷ 0,3 adalah ....','6','0,6','60','1,5','Sama-sama geser koma 1 langkah menjadi 18 ÷ 3 = 6.'],['Air sebanyak 4,8 liter dituang ke botol-botol berisi 0,4 liter. Banyak botol yang terisi adalah ....','12 botol','1,2 botol','120 botol','8 botol','4,8 ÷ 0,4, geser koma 1 langkah menjadi 48 ÷ 4 = 12 botol.'],['Hasil dari 2,7 ÷ 0,9 adalah ....','3','0,3','30','1,8','Sama-sama geser koma 1 langkah menjadi 27 ÷ 9 = 3.'],['Hasil dari 1,6 ÷ 0,4 adalah ....','4','0,4','40','1,2','Sama-sama geser koma 1 langkah menjadi 16 ÷ 4 = 4.']],
+[['Lani membawa botol minum berisi 1,5 liter air ke sekolah. Saat istirahat pertama ia meminum 0,45 liter, dan saat istirahat kedua ia meminum lagi 0,55 liter. Sisa air di botol Lani sekarang adalah ....','0,5 liter','0,6 liter','1,0 liter','2,5 liter','1,50 − (0,45 + 0,55) = 1,50 − 1,00 = 0,50 liter.'],['Ibu membeli 3 kg tepung. Dipakai 0,75 kg untuk kue pagi dan 1,25 kg untuk kue sore. Sisa tepung Ibu adalah ....','1 kg','2 kg','1,25 kg','5 kg','0,75 + 1,25 = 2,00; lalu 3,00 − 2,00 = 1,00 kg.'],['Pak Budi memiliki kawat sepanjang 5 meter. Kawat dipotong 1,2 meter, lalu dipotong lagi 2,3 meter. Sisa kawat adalah ....','1,5 meter','3,5 meter','2,5 meter','8,5 meter','1,2 + 2,3 = 3,5; lalu 5,0 − 3,5 = 1,5 meter.'],['Dayu membeli 1,5 kg apel dan 2,25 kg jeruk. Lalu 0,75 kg buah diberikan kepada tetangga. Berat buah Dayu sekarang adalah ....','3 kg','4,5 kg','3,75 kg','2,25 kg','1,50 + 2,25 = 3,75; lalu 3,75 − 0,75 = 3,00 kg.'],['Sebuah tangki berisi 10 liter air. Digunakan 3,5 liter di pagi hari dan 2,75 liter di siang hari. Sisa air di tangki adalah ....','3,75 liter','6,25 liter','4,25 liter','16,25 liter','3,50 + 2,75 = 6,25; lalu 10,00 − 6,25 = 3,75 liter.'],['Ibu memiliki kain 6 meter. Kain dipotong 2,4 meter untuk taplak dan 1,85 meter untuk sarung bantal. Sisa kain adalah ....','1,75 meter','4,25 meter','2,25 meter','10,25 meter','2,40 + 1,85 = 4,25; lalu 6,00 − 4,25 = 1,75 meter.'],['Ani memiliki tali 2,5 meter, lalu diberi temannya 1,75 meter lagi. Tali itu dipakai 3 meter. Sisa tali Ani adalah ....','1,25 meter','4,25 meter','7,25 meter','0,75 meter','2,50 + 1,75 = 4,25; lalu 4,25 − 3,00 = 1,25 meter.'],['Sebuah toko memiliki 8,5 kg gula. Pagi hari terjual 2,75 kg dan siang hari terjual 3,5 kg. Sisa gula di toko adalah ....','2,25 kg','6,25 kg','3,25 kg','14,75 kg','2,75 + 3,50 = 6,25; lalu 8,50 − 6,25 = 2,25 kg.'],['Rudi memiliki pita 1,2 meter, lalu membeli lagi 0,85 meter. Pita itu dipakai 1,5 meter. Sisa pita Rudi adalah ....','0,55 meter','2,05 meter','0,5 meter','3,55 meter','1,20 + 0,85 = 2,05; lalu 2,05 − 1,50 = 0,55 meter.'],['Sebuah botol berisi 2 liter sirup. Diminum 0,75 liter di pagi hari dan 0,6 liter di siang hari. Sisa sirup adalah ....','0,65 liter','1,35 liter','0,75 liter','3,35 liter','0,75 + 0,60 = 1,35; lalu 2,00 − 1,35 = 0,65 liter.']]
+];
+const RAW=r=>({q:r[0],c:r[1],w:[r[2],r[3],r[4]],e:r[5]});
+const MK=[
+r=>({q:'Bilangan “'+r[0]+'” ditulis ....',c:r[1],w:r.slice(2),e:'Bacaan itu ditulis '+r[1]+'. Angka di belakang koma dibaca satu per satu.'}),
+r=>({q:'Pada bilangan '+r[0]+', angka yang menempati nilai tempat '+r[1]+' adalah ....',c:r[2],w:r.slice(3),e:'Nilai tempat '+r[1]+' adalah '+PL[r[1]]+', yaitu angka '+r[2]+'.'}),
+r=>({q:'Bentuk persen dari bilangan desimal '+r[0]+' adalah ....',c:r[1],w:r.slice(2),e:r[0]+' sama dengan '+parseInt(r[1])+'/100, yaitu '+r[1]+'.'}),
+RAW,
+r=>{const d=+r[0].match(/\d+,(\d)/)[1];return{q:r[0],c:r[1],w:r.slice(2),e:'Angka persepuluhannya '+d+(d>=5?' (5 atau lebih), sehingga dibulatkan naik':' (kurang dari 5), sehingga dibulatkan turun')+' menjadi '+r[1]+'.'}},
+RAW,RAW,RAW,RAW,RAW];
+const qbag=BANK.map(()=>[]);let qlast=[];
+function buildQuiz(){quiz=BANK.map((arr,t)=>{if(!qbag[t].length)qbag[t]=arr.map((_,i)=>i).sort(()=>Math.random()-.5);const r=MK[t](arr[qbag[t].pop()]);let p;do{p=Math.floor(Math.random()*4)}while(qlast[0]===p&&qlast[1]===p);qlast=[p,qlast[0]];const o=r.w.slice().sort(()=>Math.random()-.5);o.splice(p,0,r.c);return{q:r.q,o,a:p,e:r.e}})}
+let qi=0,qchosen=null,qlocked=false,qscore=0;
+function renderQuiz(){qchosen=null;qlocked=false;$('quizCount').textContent='Pertanyaan '+(qi+1)+' dari '+quiz.length;$('quizProgress').style.width=(qi/quiz.length*100)+'%';let q=quiz[qi];$('quizArea').innerHTML='<div class="question"><h3>'+q.q+'</h3><div class="options">'+q.o.map((x,i)=>'<button class="option" onclick="chooseQuiz('+i+',this)">'+String.fromCharCode(65+i)+'. '+x+'</button>').join('')+'</div></div>';$('quizResult').innerHTML='';$('quizNext').textContent='Periksa jawaban';}
+function chooseQuiz(i,el){if(qlocked)return;qchosen=i;document.querySelectorAll('#quizArea .option').forEach(x=>x.classList.remove('selected'));el.classList.add('selected');}
+function nextQuiz(){if(!qlocked){if(qchosen===null){$('quizResult').innerHTML='<div class="feedback try">Pilih jawaban terlebih dahulu.</div>';return;}qlocked=true;let q=quiz[qi],ok=qchosen===q.a;if(ok)qscore++;$('quizResult').innerHTML='<div class="feedback '+(ok?'good':'try')+'">'+(ok?'Jawaban benar! ':'Belum tepat. ')+q.e+'</div>';$('quizNext').textContent=qi===quiz.length-1?'Lihat hasil':'Soal berikutnya';}else{qi++;if(qi<quiz.length)renderQuiz();else{$('quizProgress').style.width='100%';$('quizCount').textContent='Petualangan selesai!';$('quizArea').innerHTML='<div class="hero"><div class="big">🏆</div><h2>Skor kamu: '+qscore*10+'/100</h2><p>Kamu menjawab '+qscore+' dari '+quiz.length+' soal dengan benar.</p><p>'+(qscore>=8?'Hebat! Pemahamanmu semakin kuat.':qscore>=5?'Bagus! Pelajari kembali bagian yang masih sulit.':'Terus berlatih, kamu pasti bisa!')+'</p><button class="btn primary" onclick="resetQuiz()">Ulangi kuis</button></div>';$('quizNext').style.display='none';}}}
+function resetQuiz(){buildQuiz();qi=0;qscore=0;$('quizNext').style.display='inline-block';renderQuiz();}
+newCompare();newPlace();newShop();newPractice();buildQuiz();renderQuiz();
+/* ===== REVISI: efek, pengaturan, misi baru ===== */
+const root=document.documentElement,rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),FX={snd:true,read:false};let AC=null;
+function tone(q){if(!FX.snd)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();q.forEach(([f,t,d])=>{const o=AC.createOscillator(),g=AC.createGain(),n=AC.currentTime+t;o.frequency.value=f;g.gain.setValueAtTime(.0001,n);g.gain.exponentialRampToValueAtTime(.15,n+.03);g.gain.exponentialRampToValueAtTime(.0001,n+d);o.connect(g);g.connect(AC.destination);o.start(n);o.stop(n+d+.05)})}catch(e){}}
+const sfxOk=()=>tone([[523,0,.18],[659,.12,.18],[784,.24,.3]]),sfxSoft=()=>tone([[294,0,.35]]),sfxTap=()=>tone([[660,0,.08]]);
+const cv=document.createElement('canvas');cv.id='cv';cv.setAttribute('aria-hidden','true');document.body.appendChild(cv);const cx=cv.getContext('2d');let ps=[],run=false;
+function burst(n){if(root.hasAttribute('data-calm')||matchMedia('(prefers-reduced-motion:reduce)').matches)return;cv.width=innerWidth*devicePixelRatio;cv.height=innerHeight*devicePixelRatio;const cl=['#ffc83d','#5b4bdb','#17b383','#ff6f61','#2f80ed'];for(let i=0;i<n;i++)ps.push({x:innerWidth/2,y:innerHeight*.6,vx:(Math.random()-.5)*16,vy:-Math.random()*15-4,r:Math.random()*8+5,c:cl[i%5],a:Math.random()*6,l:1});if(!run){run=true;requestAnimationFrame(tk)}}
+function tk(){cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);cx.clearRect(0,0,innerWidth,innerHeight);ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.4;p.a+=.2;p.l-=.012;cx.save();cx.globalAlpha=Math.max(p.l,0);cx.translate(p.x,p.y);cx.rotate(p.a);cx.fillStyle=p.c;cx.fillRect(-p.r/2,-p.r/2,p.r,p.r*.6);cx.restore()});ps=ps.filter(p=>p.l>0);if(ps.length)requestAnimationFrame(tk);else{run=false;cx.clearRect(0,0,innerWidth,innerHeight)}}
+/* baca otomatis memakai pilihan suara dan kecepatan yang sama dengan Teman Baca */
+function sayNow(t){if(!FX.read||!('speechSynthesis'in window))return;speechSynthesis.cancel();speechToken++;const u=new SpeechSynthesisUtterance(cleanSpeech(t).replace(/(\d)\/(\d)/g,'$1 per $2')),sel=$('voice').value;if(sel!=='')u.voice=voices[Number(sel)];else{const id=voices.find(x=>/^id([-_]|$)/i.test(x.lang));if(id)u.voice=id}u.lang=(u.voice&&u.voice.lang)||'id-ID';u.rate=Number($('rate').value);u.pitch=1.22;speechSynthesis.speak(u)}
+document.querySelectorAll('.tg').forEach(b=>b.onclick=()=>{const k=b.dataset.k,on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);if(k==='big')root.style.fontSize=on?'125%':'';else if(k==='hc'||k==='calm')on?root.setAttribute('data-'+k,''):root.removeAttribute('data-'+k);else if(k==='snd')FX.snd=on;else{FX.read=on;if(on)sayNow('Baca jawaban otomatis menyala')}});
+new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType!==1)return;const f=n.matches('.feedback')?n:n.querySelector('.feedback');if(!f)return;if(f.classList.contains('good')){sfxOk();burst(70)}else sfxSoft();sayNow(f.textContent)}))).observe(document.body,{childList:true,subtree:true});
+/* Misi 5 */
+let nl={t:7,done:false};
+$('nlTicks').innerHTML=[...Array(11)].map((_,i)=>'<button class="tick" aria-label="tanda ke '+i+' dari 10" onclick="hopNL('+i+')"><i></i><b>'+(i==0?'0':i==5?'0,5':i==10?'1':'')+'</b></button>').join('');
+function newNL(){nl={t:rnd(1,9),done:false};$('nlProblem').textContent='Lompatkan katak ke '+fmt(nl.t/10)+'!';$('nlFrog').style.left='4.545%';$('nlFeedback').textContent='Setiap tanda naik 0,1 dari kiri ke kanan.'}
+function hopNL(i){if(nl.done)return;$('nlFrog').style.left=((i+.5)/11*100)+'%';sfxTap();if(i===nl.t){nl.done=true;addScore(10);$('nlFeedback').innerHTML='<div class="feedback good">Tepat! Katak mendarat di '+fmt(i/10)+'. +10 poin</div>'}else $('nlFeedback').innerHTML='<div class="feedback try">Katak mendarat di '+fmt(i/10)+'. '+(i<nl.t?'Terlalu kecil, geser ke kanan.':'Terlalu besar, geser ke kiri.')+'</div>'}
+/* Misi 6 */
+let kc={t:35,done:false};
+const kcN=()=>document.querySelectorAll('.kc.on').length;
+function updKC(){const n=kcN();$('kcLive').textContent=n+' kotak terwarnai = '+fmt(n/100)}
+function newKC(){kc={t:rnd(1,99),done:false};$('kcProblem').textContent='Warnai '+fmt(kc.t/100)+' bagian!';$('kcGrid').innerHTML=[...Array(100)].map((_,i)=>'<button class="kc" aria-pressed="false" aria-label="kotak '+(i+1)+'" onclick="togKC(this)"></button>').join('');$('kcFeedback').textContent='Ketuk kotak untuk mewarnai, atau pakai tombol tambah.';updKC()}
+function togKC(b){b.classList.toggle('on');b.setAttribute('aria-pressed',b.classList.contains('on'));sfxTap();updKC()}
+function addKC(n){[...document.querySelectorAll('.kc:not(.on)')].slice(0,n).forEach(b=>{b.classList.add('on');b.setAttribute('aria-pressed','true')});sfxTap();updKC()}
+function clrKC(){document.querySelectorAll('.kc.on').forEach(b=>{b.classList.remove('on');b.setAttribute('aria-pressed','false')});updKC()}
+function chkKC(){if(kc.done)return;const n=kcN();if(n===kc.t){kc.done=true;addScore(15);$('kcFeedback').innerHTML='<div class="feedback good">Tepat! '+fmt(kc.t/100)+' = '+kc.t+'/100. +15 poin</div>'}else $('kcFeedback').innerHTML='<div class="feedback try">Kamu mewarnai '+n+' kotak. '+(n<kc.t?'Tambah lagi ya.':'Terlalu banyak, kurangi ya.')+' Ingat, '+fmt(kc.t/100)+' = '+kc.t+'/100.</div>'}
+/* Misi 7 */
+const PAIRS=[['0,5','1/2'],['0,25','1/4'],['0,75','3/4'],['0,1','1/10'],['0,2','1/5'],['0,4','2/5'],['0,6','3/5'],['0,8','4/5']];let mem={};
+function newMem(){const p=PAIRS.slice().sort(()=>Math.random()-.5).slice(0,6);mem={c:p.flatMap((x,i)=>[{k:i,t:x[0]},{k:i,t:x[1]}]).sort(()=>Math.random()-.5),o:[],lock:false,f:0,m:0};$('memMoves').textContent='0';$('memFeedback').textContent='Ketuk kartu untuk membukanya.';$('memGrid').innerHTML=mem.c.map((c,i)=>'<button class="mc" aria-label="Kartu '+(i+1)+', tertutup" onclick="flipMem('+i+')"><span class="mi"><span class="mb" aria-hidden="true">❓</span><span class="mk">'+c.t+'</span></span></button>').join('')}
+function flipMem(i){const c=mem.c[i],g=$('memGrid').children;if(mem.lock||c.up||c.ok)return;c.up=true;g[i].classList.add('up');g[i].setAttribute('aria-label','Kartu '+(i+1)+': '+c.t);sfxTap();sayNow(c.t);mem.o.push(i);if(mem.o.length<2)return;mem.m++;$('memMoves').textContent=mem.m;mem.lock=true;const[a,b]=mem.o.map(x=>mem.c[x]);
+if(a.k===b.k){mem.o.forEach(x=>{mem.c[x].ok=true;g[x].classList.add('ok')});mem.o=[];mem.lock=false;mem.f++;if(mem.f===6){addScore(20);$('memFeedback').innerHTML='<div class="feedback good">Semua pasangan ketemu dalam '+mem.m+' langkah! +20 poin</div>'}else{sfxOk();$('memFeedback').textContent='Cocok! Cari pasangan berikutnya.'}}
+else setTimeout(()=>{mem.o.forEach(x=>{mem.c[x].up=false;g[x].classList.remove('up');g[x].setAttribute('aria-label','Kartu '+(x+1)+', tertutup')});mem.o=[];mem.lock=false;$('memFeedback').textContent='Belum cocok. Tidak apa-apa, coba lagi!'},1200)}
+newNL();newKC();newMem();
+
+</script>
+</body></html>
